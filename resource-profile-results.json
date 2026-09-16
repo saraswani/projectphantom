@@ -1,49 +1,49 @@
 {
-  "timestamp": "2026-09-16T18:04:12.714Z",
-  "baselineHeapMB": "5.00 MB",
-  "finalHeapMB": "5.90 MB",
-  "totalHeapDeltaMB": "0.90 MB",
+  "timestamp": "2026-09-16T19:50:43.517Z",
+  "baselineHeapMB": "5.04 MB",
+  "finalHeapMB": "5.77 MB",
+  "totalHeapDeltaMB": "0.74 MB",
   "stages": {
     "pii_scan": {
       "stage": "1. Text PII Scan & NER",
       "runtime": "Local CPU (V8 Regex + Checksum Units)",
-      "durationMs": 0.888,
-      "memBefore": 5245136,
-      "memAfter": 5311264,
-      "heapDeltaBytes": 66128,
-      "heapDeltaMB": "0.06 MB"
+      "durationMs": 1.378,
+      "memBefore": 5287376,
+      "memAfter": 5421600,
+      "heapDeltaBytes": 134224,
+      "heapDeltaMB": "0.13 MB"
     },
     "face_detection": {
       "stage": "2. Local Face Detector",
       "runtime": "WebGL / WASM (with Heuristic Fallback)",
-      "durationMs": 18.202,
-      "memBefore": 5315088,
-      "memAfter": 5760720,
-      "heapDeltaBytes": 445632,
-      "heapDeltaMB": "0.42 MB"
+      "durationMs": 33.365,
+      "memBefore": 5425424,
+      "memAfter": 5773744,
+      "heapDeltaBytes": 348320,
+      "heapDeltaMB": "0.33 MB"
     },
     "vit_classification": {
       "stage": "3. ScreenViT Visual Model",
       "runtime": "WASM (WebAssembly SIMD)",
-      "durationMs": 18.949,
-      "memBefore": 5761496,
-      "memAfter": 6164872,
-      "heapDeltaBytes": 403376,
-      "heapDeltaMB": "0.38 MB"
+      "durationMs": 29.651,
+      "memBefore": 5774520,
+      "memAfter": 6048048,
+      "heapDeltaBytes": 273528,
+      "heapDeltaMB": "0.26 MB"
     },
     "dom_redaction": {
       "stage": "4. DOM & Canvas Redaction",
       "runtime": "DOM Mutation Engine + 2D Canvas",
-      "durationMs": 0.243,
-      "memBefore": 6165600,
-      "memAfter": 6185328,
-      "heapDeltaBytes": 19728,
-      "heapDeltaMB": "0.02 MB"
+      "durationMs": 0.209,
+      "memBefore": 6048776,
+      "memAfter": 6054256,
+      "heapDeltaBytes": 5480,
+      "heapDeltaMB": "0.01 MB"
     }
   },
   "extensionFootprint": {
-    "activeMemoryEstimate": "5.90 MB",
-    "idleMemoryEstimate": "5.00 MB",
+    "activeMemoryEstimate": "5.77 MB",
+    "idleMemoryEstimate": "5.04 MB",
     "maxMemoryCeiling": "35.0 MB (Chromium Extension Sandbox Bound)",
     "conformanceStatus": "PASS (Exceeds ISRO SIH < 50MB Resource Target)"
   }

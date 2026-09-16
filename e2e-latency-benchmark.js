@@ -14,10 +14,14 @@ const fs = require('fs');
 const path = require('path');
 const { performance } = require('perf_hooks');
 
-// Import Core Engines & Instrumentation
-const { instrumentation } = require('../lib/telemetry/instrumentation');
-const { TextPIIDetector } = require('../lib/pii/text-detector');
-const { ScreenViTModel } = require('../lib/vision/screen-vit');
+// Import Core Engines & Instrumentation (Support running from root or test/ directory)
+const resolveLib = (rel) => fs.existsSync(path.join(__dirname, 'lib', rel + '.js')) || fs.existsSync(path.join(__dirname, 'lib', rel))
+  ? require(path.join(__dirname, 'lib', rel))
+  : require(path.join(__dirname, '..', 'lib', rel));
+
+const { instrumentation } = resolveLib('telemetry/instrumentation');
+const { TextPIIDetector } = resolveLib('pii/text-detector');
+const { ScreenViTModel } = resolveLib('vision/screen-vit');
 
 console.log('========================================================================');
 console.log('⚡ PrivacyShield - End-to-End Full Loop Latency Benchmark (ISRO SIH)');

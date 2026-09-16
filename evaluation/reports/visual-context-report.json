@@ -1,0 +1,159 @@
+{
+  "benchmark": "visual_context_accuracy",
+  "sihWeight": "25%",
+  "timestamp": "2026-09-16T20:15:29.450Z",
+  "totalExpectedElements": 34,
+  "totalDetectedElements": 31,
+  "correctElements": 31,
+  "accuracy": 1,
+  "precision": 1,
+  "recall": 1,
+  "f1": 1,
+  "durationMs": 145.14,
+  "vitClassification": {
+    "status": "success",
+    "visualPageType": "document_reader",
+    "visualLabel": "Document / Article Page",
+    "visualConfidence": 0.84,
+    "metrics": {
+      "luminance": 0.5,
+      "edgeComplexity": 0,
+      "patchEmbeddings": 196
+    },
+    "executionProvider": "WASM (WebAssembly SIMD)",
+    "loadTimeMs": 84.35,
+    "inferenceLatencyMs": 51.15
+  },
+  "categoryResults": {
+    "buttons": {
+      "expected": 5,
+      "detected": 5,
+      "tp": 5,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1,
+      "f1": 1
+    },
+    "links": {
+      "expected": 4,
+      "detected": 4,
+      "tp": 4,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1,
+      "f1": 1
+    },
+    "text_nodes": {
+      "expected": 6,
+      "detected": 6,
+      "tp": 6,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1,
+      "f1": 1
+    },
+    "input_fields": {
+      "expected": 3,
+      "detected": 3,
+      "tp": 3,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1,
+      "f1": 1
+    },
+    "checkboxes": {
+      "expected": 2,
+      "detected": 2,
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1,
+      "f1": 1
+    },
+    "radio_buttons": {
+      "expected": 2,
+      "detected": 2,
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1,
+      "f1": 1
+    },
+    "menus": {
+      "expected": 1,
+      "detected": 1,
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1,
+      "f1": 1
+    },
+    "cards": {
+      "expected": 3,
+      "detected": 3,
+      "tp": 3,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1,
+      "f1": 1
+    },
+    "tables": {
+      "expected": 1,
+      "detected": 1,
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1,
+      "f1": 1
+    },
+    "images": {
+      "expected": 1,
+      "detected": 1,
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1,
+      "f1": 1
+    },
+    "forms": {
+      "expected": 1,
+      "detected": 1,
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1,
+      "f1": 1
+    },
+    "navigation": {
+      "expected": 1,
+      "detected": 1,
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1,
+      "f1": 1
+    },
+    "dialogs": {
+      "expected": 1,
+      "detected": 1,
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1,
+      "f1": 1
+    }
+  }
+}

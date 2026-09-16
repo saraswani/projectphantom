@@ -1,373 +1,373 @@
 {
-  "timestamp": "2026-09-16T18:04:12.355Z",
+  "timestamp": "2026-09-16T19:52:38.362Z",
   "totalTrials": 30,
   "stages": {
     "screenshot_capture": {
-      "mean": 12.9,
-      "p50": 13.45,
-      "p95": 15.75,
-      "min": 8.52,
-      "max": 17.19
+      "mean": 16.45,
+      "p50": 16.69,
+      "p95": 20.72,
+      "min": 11.21,
+      "max": 24.98
     },
     "redaction_pipeline": {
-      "mean": 9.97,
-      "p50": 9.6,
-      "p95": 14.28,
-      "min": 5.31,
-      "max": 30.51
+      "mean": 18.46,
+      "p50": 16.8,
+      "p95": 28.38,
+      "min": 13.33,
+      "max": 46.84
     },
     "network_post": {
-      "mean": 17.77,
-      "p50": 17.83,
-      "p95": 21.64,
-      "min": 12.53,
-      "max": 24.88
+      "mean": 23.6,
+      "p50": 17.59,
+      "p95": 36.48,
+      "min": 14.98,
+      "max": 38.74
     },
     "vlm_response": {
-      "mean": 52.56,
-      "p50": 53.57,
-      "p95": 65.94,
-      "min": 36.78,
-      "max": 67.69
+      "mean": 54.97,
+      "p50": 50.62,
+      "p95": 67.13,
+      "min": 45.17,
+      "max": 70.88
     },
     "dom_action_execution": {
-      "mean": 8.96,
-      "p50": 8.5,
-      "p95": 12.9,
-      "min": 5.39,
-      "max": 14.15
+      "mean": 16.39,
+      "p50": 16.63,
+      "p95": 20.21,
+      "min": 10.4,
+      "max": 21.63
     },
     "total_e2e_loop": {
-      "mean": 102.33,
-      "p50": 104.89,
-      "p95": 118.69,
-      "min": 82.65,
-      "max": 126.31
+      "mean": 130.04,
+      "p50": 131.81,
+      "p95": 150.23,
+      "min": 115.31,
+      "max": 178.9
     }
   },
   "tasks": {
     "form_fill": {
-      "mean": 100.49,
-      "p50": 98.36,
-      "p95": 126.31,
-      "min": 82.65,
-      "max": 126.31
+      "mean": 137.92,
+      "p50": 133.28,
+      "p95": 178.9,
+      "min": 117.15,
+      "max": 178.9
     },
     "click": {
-      "mean": 104.98,
-      "p50": 109.88,
-      "p95": 114.58,
-      "min": 92.21,
-      "max": 114.58
+      "mean": 125.03,
+      "p50": 127.54,
+      "p95": 136.05,
+      "min": 115.31,
+      "max": 136.05
     },
     "scroll": {
-      "mean": 101.52,
-      "p50": 105.99,
-      "p95": 118.69,
-      "min": 83,
-      "max": 118.69
+      "mean": 127.18,
+      "p50": 131.81,
+      "p95": 133.56,
+      "min": 115.84,
+      "max": 133.56
     }
   },
   "rawTrials": [
     {
       "trial": 1,
       "taskType": "form_fill",
-      "captureDuration": 12.63,
-      "redactDuration": 30.51,
-      "netDuration": 12.57,
-      "vlmDuration": 56.98,
-      "execDuration": 12.9,
-      "totalDuration": 126.31
+      "captureDuration": 24.98,
+      "redactDuration": 46.84,
+      "netDuration": 15.43,
+      "vlmDuration": 70.88,
+      "execDuration": 20.21,
+      "totalDuration": 178.9
     },
     {
       "trial": 2,
       "taskType": "click",
-      "captureDuration": 15.49,
-      "redactDuration": 14.28,
-      "netDuration": 16.55,
-      "vlmDuration": 43.09,
-      "execDuration": 8.5,
-      "totalDuration": 98.2
+      "captureDuration": 11.21,
+      "redactDuration": 20.63,
+      "netDuration": 16.14,
+      "vlmDuration": 67.13,
+      "execDuration": 15.6,
+      "totalDuration": 131.02
     },
     {
       "trial": 3,
       "taskType": "scroll",
-      "captureDuration": 15.75,
-      "redactDuration": 8.4,
-      "netDuration": 16.98,
-      "vlmDuration": 59.31,
-      "execDuration": 7.45,
-      "totalDuration": 108.07
+      "captureDuration": 17.39,
+      "redactDuration": 15.71,
+      "netDuration": 32.31,
+      "vlmDuration": 45.17,
+      "execDuration": 21.63,
+      "totalDuration": 132.4
     },
     {
       "trial": 4,
       "taskType": "form_fill",
-      "captureDuration": 13.51,
-      "redactDuration": 10.18,
-      "netDuration": 18.82,
-      "vlmDuration": 65.56,
-      "execDuration": 7.99,
-      "totalDuration": 116.24
+      "captureDuration": 18.16,
+      "redactDuration": 13.33,
+      "netDuration": 38.74,
+      "vlmDuration": 48.9,
+      "execDuration": 13.15,
+      "totalDuration": 132.49
     },
     {
       "trial": 5,
       "taskType": "click",
-      "captureDuration": 12.79,
-      "redactDuration": 9.32,
-      "netDuration": 20.02,
-      "vlmDuration": 38.91,
-      "execDuration": 11.02,
-      "totalDuration": 92.21
+      "captureDuration": 12.15,
+      "redactDuration": 20.68,
+      "netDuration": 36.48,
+      "vlmDuration": 51.73,
+      "execDuration": 14.84,
+      "totalDuration": 136.05
     },
     {
       "trial": 6,
       "taskType": "scroll",
-      "captureDuration": 15.19,
-      "redactDuration": 14.08,
-      "netDuration": 17.83,
-      "vlmDuration": 50.84,
-      "execDuration": 7.89,
-      "totalDuration": 105.99
+      "captureDuration": 14.31,
+      "redactDuration": 16.36,
+      "netDuration": 34.74,
+      "vlmDuration": 47.85,
+      "execDuration": 17.72,
+      "totalDuration": 131.24
     },
     {
       "trial": 7,
       "taskType": "form_fill",
-      "captureDuration": 15.01,
-      "redactDuration": 8.66,
-      "netDuration": 16.37,
-      "vlmDuration": 36.78,
-      "execDuration": 7.59,
-      "totalDuration": 84.66
+      "captureDuration": 20.72,
+      "redactDuration": 28.38,
+      "netDuration": 31.76,
+      "vlmDuration": 52.38,
+      "execDuration": 16.82,
+      "totalDuration": 150.23
     },
     {
       "trial": 8,
       "taskType": "click",
-      "captureDuration": 13.49,
-      "redactDuration": 10.12,
-      "netDuration": 20.66,
-      "vlmDuration": 61.48,
-      "execDuration": 7.84,
-      "totalDuration": 113.74
+      "captureDuration": 11.26,
+      "redactDuration": 21,
+      "netDuration": 20.28,
+      "vlmDuration": 60.28,
+      "execDuration": 14.55,
+      "totalDuration": 127.54
     },
     {
       "trial": 9,
       "taskType": "scroll",
-      "captureDuration": 8.69,
-      "redactDuration": 9.72,
-      "netDuration": 21.64,
-      "vlmDuration": 46.46,
-      "execDuration": 6.56,
-      "totalDuration": 93.26
+      "captureDuration": 15.2,
+      "redactDuration": 16.98,
+      "netDuration": 33,
+      "vlmDuration": 50.92,
+      "execDuration": 15.32,
+      "totalDuration": 131.81
     },
     {
       "trial": 10,
       "taskType": "form_fill",
-      "captureDuration": 17.19,
-      "redactDuration": 11.04,
-      "netDuration": 21.44,
-      "vlmDuration": 53.57,
-      "execDuration": 6.44,
-      "totalDuration": 109.85
+      "captureDuration": 16.71,
+      "redactDuration": 16.54,
+      "netDuration": 33.49,
+      "vlmDuration": 49.78,
+      "execDuration": 16.49,
+      "totalDuration": 133.28
     },
     {
       "trial": 11,
       "taskType": "click",
-      "captureDuration": 8.52,
-      "redactDuration": 12.68,
-      "netDuration": 18.66,
-      "vlmDuration": 60.83,
-      "execDuration": 9.52,
-      "totalDuration": 110.62
+      "captureDuration": 16.75,
+      "redactDuration": 16.33,
+      "netDuration": 17.41,
+      "vlmDuration": 65.35,
+      "execDuration": 16.63,
+      "totalDuration": 132.81
     },
     {
       "trial": 12,
       "taskType": "scroll",
-      "captureDuration": 12.48,
-      "redactDuration": 7.99,
-      "netDuration": 13.46,
-      "vlmDuration": 47.82,
-      "execDuration": 14.15,
-      "totalDuration": 96.08
+      "captureDuration": 17.84,
+      "redactDuration": 16.41,
+      "netDuration": 15.68,
+      "vlmDuration": 49.43,
+      "execDuration": 17.9,
+      "totalDuration": 117.4
     },
     {
       "trial": 13,
       "taskType": "form_fill",
-      "captureDuration": 14.73,
-      "redactDuration": 5.31,
-      "netDuration": 15.03,
-      "vlmDuration": 47.73,
-      "execDuration": 9.95,
-      "totalDuration": 92.96
+      "captureDuration": 16.49,
+      "redactDuration": 16.85,
+      "netDuration": 33.05,
+      "vlmDuration": 66.05,
+      "execDuration": 16.78,
+      "totalDuration": 149.38
     },
     {
       "trial": 14,
       "taskType": "click",
-      "captureDuration": 13.45,
-      "redactDuration": 7.75,
-      "netDuration": 15.36,
-      "vlmDuration": 67.69,
-      "execDuration": 10.2,
-      "totalDuration": 114.58
+      "captureDuration": 16.07,
+      "redactDuration": 17.11,
+      "netDuration": 17.59,
+      "vlmDuration": 49.56,
+      "execDuration": 16.02,
+      "totalDuration": 116.52
     },
     {
       "trial": 15,
       "taskType": "scroll",
-      "captureDuration": 13.23,
-      "redactDuration": 9.6,
-      "netDuration": 16.17,
-      "vlmDuration": 52.7,
-      "execDuration": 11.45,
-      "totalDuration": 103.22
+      "captureDuration": 15.69,
+      "redactDuration": 18.08,
+      "netDuration": 15.64,
+      "vlmDuration": 66.52,
+      "execDuration": 17.28,
+      "totalDuration": 133.28
     },
     {
       "trial": 16,
       "taskType": "form_fill",
-      "captureDuration": 12.21,
-      "redactDuration": 10.33,
-      "netDuration": 16.14,
-      "vlmDuration": 50.06,
-      "execDuration": 9.52,
-      "totalDuration": 98.36
+      "captureDuration": 16.56,
+      "redactDuration": 17.13,
+      "netDuration": 33.56,
+      "vlmDuration": 66.83,
+      "execDuration": 15.83,
+      "totalDuration": 149.98
     },
     {
       "trial": 17,
       "taskType": "click",
-      "captureDuration": 12.18,
-      "redactDuration": 9.66,
-      "netDuration": 12.82,
-      "vlmDuration": 57.32,
-      "execDuration": 12.84,
-      "totalDuration": 104.89
+      "captureDuration": 16.77,
+      "redactDuration": 16.55,
+      "netDuration": 17.01,
+      "vlmDuration": 49.37,
+      "execDuration": 17.02,
+      "totalDuration": 116.78
     },
     {
       "trial": 18,
       "taskType": "scroll",
-      "captureDuration": 9.7,
-      "redactDuration": 9.25,
-      "netDuration": 18.81,
-      "vlmDuration": 39.26,
-      "execDuration": 5.87,
-      "totalDuration": 83
+      "captureDuration": 15.62,
+      "redactDuration": 17.81,
+      "netDuration": 32.2,
+      "vlmDuration": 50.6,
+      "execDuration": 17.27,
+      "totalDuration": 133.56
     },
     {
       "trial": 19,
       "taskType": "form_fill",
-      "captureDuration": 8.59,
-      "redactDuration": 8.49,
-      "netDuration": 17.74,
-      "vlmDuration": 40,
-      "execDuration": 7.75,
-      "totalDuration": 82.65
+      "captureDuration": 15.42,
+      "redactDuration": 16.79,
+      "netDuration": 33.45,
+      "vlmDuration": 50.88,
+      "execDuration": 15.61,
+      "totalDuration": 132.22
     },
     {
       "trial": 20,
       "taskType": "click",
-      "captureDuration": 10.24,
-      "redactDuration": 6.79,
-      "netDuration": 21.06,
-      "vlmDuration": 63.48,
-      "execDuration": 8.23,
-      "totalDuration": 109.88
+      "captureDuration": 16.93,
+      "redactDuration": 17.19,
+      "netDuration": 16.43,
+      "vlmDuration": 49.45,
+      "execDuration": 17.39,
+      "totalDuration": 117.46
     },
     {
       "trial": 21,
       "taskType": "scroll",
-      "captureDuration": 13.48,
-      "redactDuration": 5.64,
-      "netDuration": 24.88,
-      "vlmDuration": 37.65,
-      "execDuration": 5.39,
-      "totalDuration": 87.12
+      "captureDuration": 16.69,
+      "redactDuration": 16.8,
+      "netDuration": 16.65,
+      "vlmDuration": 49.99,
+      "execDuration": 15.65,
+      "totalDuration": 115.84
     },
     {
       "trial": 22,
       "taskType": "form_fill",
-      "captureDuration": 12.03,
-      "redactDuration": 9.68,
-      "netDuration": 18.16,
-      "vlmDuration": 58.53,
-      "execDuration": 7.1,
-      "totalDuration": 105.59
+      "captureDuration": 17.38,
+      "redactDuration": 18.42,
+      "netDuration": 15.1,
+      "vlmDuration": 49.57,
+      "execDuration": 17.52,
+      "totalDuration": 118.15
     },
     {
       "trial": 23,
       "taskType": "click",
-      "captureDuration": 14.57,
-      "redactDuration": 9.4,
-      "netDuration": 20.29,
-      "vlmDuration": 56.51,
-      "execDuration": 10.19,
-      "totalDuration": 111.11
+      "captureDuration": 15.39,
+      "redactDuration": 16.1,
+      "netDuration": 17.2,
+      "vlmDuration": 50.6,
+      "execDuration": 15.93,
+      "totalDuration": 115.31
     },
     {
       "trial": 24,
       "taskType": "scroll",
-      "captureDuration": 14.01,
-      "redactDuration": 7.24,
-      "netDuration": 17.3,
-      "vlmDuration": 65.94,
-      "execDuration": 7.41,
-      "totalDuration": 112
+      "captureDuration": 17.01,
+      "redactDuration": 16.38,
+      "netDuration": 16.92,
+      "vlmDuration": 65.8,
+      "execDuration": 16.97,
+      "totalDuration": 133.14
     },
     {
       "trial": 25,
       "taskType": "form_fill",
-      "captureDuration": 12.37,
-      "redactDuration": 7.48,
-      "netDuration": 15.1,
-      "vlmDuration": 45.79,
-      "execDuration": 11.05,
-      "totalDuration": 91.92
+      "captureDuration": 17.6,
+      "redactDuration": 19.36,
+      "netDuration": 16.05,
+      "vlmDuration": 47.84,
+      "execDuration": 15.9,
+      "totalDuration": 117.15
     },
     {
       "trial": 26,
       "taskType": "click",
-      "captureDuration": 15.74,
-      "redactDuration": 8.29,
-      "netDuration": 20.65,
-      "vlmDuration": 39.26,
-      "execDuration": 8.33,
-      "totalDuration": 92.34
+      "captureDuration": 16.29,
+      "redactDuration": 16.63,
+      "netDuration": 18.24,
+      "vlmDuration": 64.98,
+      "execDuration": 16.08,
+      "totalDuration": 132.32
     },
     {
       "trial": 27,
       "taskType": "scroll",
-      "captureDuration": 13.54,
-      "redactDuration": 10.44,
-      "netDuration": 19.09,
-      "vlmDuration": 64.93,
-      "execDuration": 10.59,
-      "totalDuration": 118.69
+      "captureDuration": 17.73,
+      "redactDuration": 16.36,
+      "netDuration": 17.49,
+      "vlmDuration": 48.56,
+      "execDuration": 16.86,
+      "totalDuration": 117.1
     },
     {
       "trial": 28,
       "taskType": "form_fill",
-      "captureDuration": 11.98,
-      "redactDuration": 10.26,
-      "netDuration": 20,
-      "vlmDuration": 48.49,
-      "execDuration": 5.57,
-      "totalDuration": 96.37
+      "captureDuration": 17.28,
+      "redactDuration": 15.44,
+      "netDuration": 17.59,
+      "vlmDuration": 50.16,
+      "execDuration": 16.86,
+      "totalDuration": 117.4
     },
     {
       "trial": 29,
       "taskType": "click",
-      "captureDuration": 10.47,
-      "redactDuration": 6.72,
-      "netDuration": 12.53,
-      "vlmDuration": 63.39,
-      "execDuration": 9.02,
-      "totalDuration": 102.21
+      "captureDuration": 16.4,
+      "redactDuration": 15.57,
+      "netDuration": 14.98,
+      "vlmDuration": 62.06,
+      "execDuration": 15.43,
+      "totalDuration": 124.54
     },
     {
       "trial": 30,
       "taskType": "scroll",
-      "captureDuration": 13.69,
-      "redactDuration": 9.77,
-      "netDuration": 17.14,
-      "vlmDuration": 56.5,
-      "execDuration": 10.57,
-      "totalDuration": 107.77
+      "captureDuration": 15.39,
+      "redactDuration": 16.14,
+      "netDuration": 33.33,
+      "vlmDuration": 50.62,
+      "execDuration": 10.4,
+      "totalDuration": 125.98
     }
   ]
 }

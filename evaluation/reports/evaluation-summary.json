@@ -1,0 +1,93 @@
+{
+  "title": "Phantom AI Official SIH Evaluation Master Summary",
+  "evaluationDate": "2026-09-16T20:15:35.014Z",
+  "totalExecutionTimeMs": 5711.47,
+  "metrics": {
+    "visualContextAccuracy": {
+      "weight": "25%",
+      "weightFloat": 0.25,
+      "measuredAccuracy": 1,
+      "measuredAccuracyPercent": "100.00%",
+      "measuredPrecision": 1,
+      "measuredRecall": 1,
+      "measuredF1": 1,
+      "totalElementsTested": 34,
+      "targetAccuracy": ">= 80.0%",
+      "conformance": "EXCEEDS TARGET"
+    },
+    "piiPrecisionAndRecall": {
+      "weight": "20%",
+      "weightFloat": 0.2,
+      "measuredPrecision": 1,
+      "measuredPrecisionPercent": "100.00%",
+      "measuredRecall": 1,
+      "measuredRecallPercent": "100.00%",
+      "measuredF1": 1,
+      "totalCategoriesTested": 15,
+      "totalItemsTested": 31,
+      "targetRecall": ">= 95.0%",
+      "conformance": "EXCEEDS TARGET"
+    },
+    "redactionPrecision": {
+      "weight": "20%",
+      "weightFloat": 0.2,
+      "measuredMeanIoU": 0.8708,
+      "measuredMeanIoUPercent": "87.08%",
+      "measuredPrecision": 0.8797,
+      "measuredRecall": 1,
+      "leakageRate": 0,
+      "leakageRatePercent": "0.00%",
+      "overRedactionRate": 0.0027,
+      "overRedactionRatePercent": "0.27%",
+      "utilityPreservation": 0.9973,
+      "utilityPreservationPercent": "99.73%",
+      "targetIoU": ">= 70.0%",
+      "targetLeakage": "0.00%",
+      "conformance": "EXCEEDS TARGET"
+    },
+    "clientResourceUtilization": {
+      "weight": "20%",
+      "weightFloat": 0.2,
+      "modelSizeMB": 0.44,
+      "averageMemoryMB": 7.48,
+      "peakMemoryMB": 7.53,
+      "netMemoryDeltaMB": 0,
+      "averageInferenceMs": 3.115,
+      "redactionLatencyMs": 1.22,
+      "hardwareProvider": "WASM (WebAssembly SIMD)",
+      "memoryCeilingMB": 50,
+      "conformance": "EXCEEDS TARGET"
+    },
+    "endToEndLatency": {
+      "weight": "15%",
+      "weightFloat": 0.15,
+      "totalTrials": 30,
+      "averageLatencyMs": 163.5,
+      "medianLatencyMs": 137.29,
+      "p95LatencyMs": 297.62,
+      "minLatencyMs": 98.22,
+      "maxLatencyMs": 300.79,
+      "latencyCeilingMs": 300,
+      "conformance": "EXCEEDS TARGET"
+    }
+  },
+  "privacyAndSecurityVerification": {
+    "networkLeakageViolations": 0,
+    "rawPIITransmitted": 0,
+    "privacyGateStatus": "ACTIVE & ENFORCED",
+    "securityTestsPassed": 6,
+    "securityTestsTotal": 6,
+    "securityPassRate": "100.00%"
+  },
+  "compositeScore": {
+    "totalScore": 86.23,
+    "maxPossibleScore": 100,
+    "breakdown": {
+      "visualContextScore": "25 / 25",
+      "piiDetectionScore": "20 / 20",
+      "redactionPrecisionScore": "17.42 / 20",
+      "resourceUtilizationScore": "16.99 / 20",
+      "endToEndLatencyScore": "6.83 / 15"
+    }
+  }
+}

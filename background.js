@@ -9,9 +9,9 @@
  * - External AI API keys are never stored, logged, or received here.
  */
 
-// Import config
+// Import config and privacy gate
 try {
-  importScripts('config.js');
+  importScripts('config.js', 'lib/pii/verhoeff.js', 'lib/pii/luhn.js', 'lib/pii/regex-rules.js', 'lib/pii/text-detector.js', 'lib/privacy/privacy-gate.js');
 } catch (e) {
   console.warn('[PrivacyShield Background] importScripts notice:', e);
 }
@@ -42,9 +42,12 @@ function synthesizeLocalActions(screenStructure, task, pageClassification) {
       else if (label.includes('pin') || label.includes('zip')) fieldType = 'pincode';
 
       actions.push({
+        action: 'fill',
         type: 'fill',
         selector: inp.selector || `input[name="${inp.label}"]`,
-        fieldType: fieldType
+        target: { type: 'selector', value: inp.selector || `input[name="${inp.label}"]` },
+        fieldType: fieldType,
+        confidence: 0.95
       });
     });
 
@@ -54,11 +57,11 @@ function synthesizeLocalActions(screenStructure, task, pageClassification) {
     return {
       type: 'action',
       actions: actions.length > 0 ? actions : [
-        { type: 'fill', selector: '#input-fullname, input[name="name"]', fieldType: 'name' },
-        { type: 'fill', selector: '#input-user-email, input[name="email"]', fieldType: 'email' },
-        { type: 'fill', selector: '#input-user-phone, input[name="phone"]', fieldType: 'phone' },
-        { type: 'fill', selector: '#input-user-aadhaar, input[name="aadhaar"]', fieldType: 'aadhaar' },
-        { type: 'fill', selector: '#input-user-address, input[name="address"]', fieldType: 'address' }
+        { action: 'fill', type: 'fill', selector: '#input-fullname, input[name="name"]', target: { type: 'selector', value: '#input-fullname' }, fieldType: 'name', confidence: 0.95 },
+        { action: 'fill', type: 'fill', selector: '#input-user-email, input[name="email"]', target: { type: 'selector', value: '#input-user-email' }, fieldType: 'email', confidence: 0.95 },
+        { action: 'fill', type: 'fill', selector: '#input-user-phone, input[name="phone"]', target: { type: 'selector', value: '#input-user-phone' }, fieldType: 'phone', confidence: 0.95 },
+        { action: 'fill', type: 'fill', selector: '#input-user-aadhaar, input[name="aadhaar"]', target: { type: 'selector', value: '#input-user-aadhaar' }, fieldType: 'aadhaar', confidence: 0.95 },
+        { action: 'fill', type: 'fill', selector: '#input-user-address, input[name="address"]', target: { type: 'selector', value: '#input-user-address' }, fieldType: 'address', confidence: 0.95 }
       ]
     };
   }
@@ -80,7 +83,7 @@ function synthesizeLocalActions(screenStructure, task, pageClassification) {
     if (btn) {
       return {
         type: 'action',
-        actions: [{ type: 'click', selector: btn.selector }]
+        actions: [{ action: 'click', type: 'click', selector: btn.selector, target: { type: 'selector', value: btn.selector }, confidence: 0.94 }]
       };
     }
   }
@@ -129,6 +132,20 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       const proxyUrl = storage.proxyUrl || DEFAULT_PROXY_URL;
 
       try {
+        // Strict Privacy Gate Validation before Network Transmission
+        let outboundPayload = payload;
+        const gate = (typeof privacyGate !== 'undefined') ? privacyGate : (typeof window !== 'undefined' ? window.privacyGate : null);
+        if (gate && typeof gate.inspectOutboundPayload === 'function') {
+          const gateResult = gate.inspectOutboundPayload(payload);
+          if (gateResult.blocked) {
+            console.warn('[PrivacyGate Background] Blocked outbound transmission:', gateResult.reason);
+            throw new Error(`Privacy Gate Enforcement: Transmission blocked. ${gateResult.reason}`);
+          }
+          if (gateResult.sanitizedPayload) {
+            outboundPayload = gateResult.sanitizedPayload;
+          }
+        }
+
         console.log(`[PrivacyShield Background] Routing sanitized request to proxy: ${proxyUrl}`);
 
         const controller = new AbortController();
@@ -141,11 +158,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             'Accept': 'application/json'
           },
           body: JSON.stringify({
-            sanitizedText: payload.sanitizedText,
-            sanitizedImageBase64: payload.sanitizedImageBase64,
-            screenStructure: payload.screenStructure,
-            task: payload.task,
-            pageClassification: payload.pageClassification,
+            sanitizedText: outboundPayload.sanitizedText,
+            sanitizedImageBase64: outboundPayload.sanitizedImageBase64,
+            screenStructure: outboundPayload.screenStructure,
+            task: outboundPayload.task,
+            pageClassification: outboundPayload.pageClassification,
             timestamp: Date.now()
           }),
           signal: controller.signal

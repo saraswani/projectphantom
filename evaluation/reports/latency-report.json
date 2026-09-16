@@ -1,0 +1,173 @@
+{
+  "benchmark": "end_to_end_latency",
+  "sihWeight": "15%",
+  "timestamp": "2026-09-16T20:15:34.976Z",
+  "totalTrials": 30,
+  "e2eStats": {
+    "count": 30,
+    "min": 98.22,
+    "max": 300.79,
+    "mean": 163.5,
+    "median": 137.29,
+    "p95": 297.62,
+    "p99": 300.79,
+    "stdDev": 55.74
+  },
+  "localProcessingStats": {
+    "count": 30,
+    "min": 29.94,
+    "max": 139.3,
+    "mean": 62.53,
+    "median": 51.87,
+    "p95": 132.68,
+    "p99": 139.3,
+    "stdDev": 31.73
+  },
+  "serverAndNetworkStats": {
+    "count": 30,
+    "min": 48.71,
+    "max": 136.36,
+    "mean": 72.5,
+    "median": 68.28,
+    "p95": 95.78,
+    "p99": 136.36,
+    "stdDev": 17.04
+  },
+  "actionExecutionStats": {
+    "count": 30,
+    "min": 12.11,
+    "max": 68.71,
+    "mean": 27.8,
+    "median": 27.52,
+    "p95": 64.67,
+    "p99": 68.71,
+    "stdDev": 14.69
+  },
+  "trialsSummary": [
+    {
+      "trialIndex": 1,
+      "taskType": "form_fill",
+      "timestamps": {
+        "T0": 1018.3234,
+        "T1": 1056.7308,
+        "T2": 1061.7349,
+        "T3": 1077.4694,
+        "T4": 1104.6235,
+        "T5": 1106.0106,
+        "T6": 1190.0283,
+        "T7": 1218.3739
+      },
+      "durations": {
+        "screenCapture": 38.41,
+        "visualPerception": 5,
+        "piiDetection": 15.73,
+        "localRedaction": 27.15,
+        "localProcessingTotal": 86.3,
+        "networkSend": 1.39,
+        "serverAndNetwork": 84.02,
+        "actionExecution": 28.35,
+        "totalE2E": 200.05
+      }
+    },
+    {
+      "trialIndex": 2,
+      "taskType": "form_fill",
+      "timestamps": {
+        "T0": 1218.5605,
+        "T1": 1282.4465,
+        "T2": 1286.7643,
+        "T3": 1286.9481,
+        "T4": 1326.9916,
+        "T5": 1327.2792,
+        "T6": 1423.0573,
+        "T7": 1458.588
+      },
+      "durations": {
+        "screenCapture": 63.89,
+        "visualPerception": 4.32,
+        "piiDetection": 0.18,
+        "localRedaction": 40.04,
+        "localProcessingTotal": 108.43,
+        "networkSend": 0.29,
+        "serverAndNetwork": 95.78,
+        "actionExecution": 35.53,
+        "totalE2E": 240.03
+      }
+    },
+    {
+      "trialIndex": 3,
+      "taskType": "form_fill",
+      "timestamps": {
+        "T0": 1458.6817,
+        "T1": 1487.3258,
+        "T2": 1488.6081,
+        "T3": 1488.7832,
+        "T4": 1521.0905,
+        "T5": 1521.288,
+        "T6": 1593.6545,
+        "T7": 1624.7726
+      },
+      "durations": {
+        "screenCapture": 28.64,
+        "visualPerception": 1.28,
+        "piiDetection": 0.18,
+        "localRedaction": 32.31,
+        "localProcessingTotal": 62.41,
+        "networkSend": 0.2,
+        "serverAndNetwork": 72.37,
+        "actionExecution": 31.12,
+        "totalE2E": 166.09
+      }
+    },
+    {
+      "trialIndex": 4,
+      "taskType": "form_fill",
+      "timestamps": {
+        "T0": 1624.8536,
+        "T1": 1651.4933,
+        "T2": 1652.9238,
+        "T3": 1653.2383,
+        "T4": 1689.8345,
+        "T5": 1690.0262,
+        "T6": 1771.5426,
+        "T7": 1799.1123
+      },
+      "durations": {
+        "screenCapture": 26.64,
+        "visualPerception": 1.43,
+        "piiDetection": 0.31,
+        "localRedaction": 36.6,
+        "localProcessingTotal": 64.98,
+        "networkSend": 0.19,
+        "serverAndNetwork": 81.52,
+        "actionExecution": 27.57,
+        "totalE2E": 174.26
+      }
+    },
+    {
+      "trialIndex": 5,
+      "taskType": "form_fill",
+      "timestamps": {
+        "T0": 1799.1783,
+        "T1": 1833.1526,
+        "T2": 1834.4794,
+        "T3": 1834.6729,
+        "T4": 1844.2774,
+        "T5": 1844.4947,
+        "T6": 1920.8546,
+        "T7": 1975.4874
+      },
+      "durations": {
+        "screenCapture": 33.97,
+        "visualPerception": 1.33,
+        "piiDetection": 0.19,
+        "localRedaction": 9.6,
+        "localProcessingTotal": 45.1,
+        "networkSend": 0.22,
+        "serverAndNetwork": 76.36,
+        "actionExecution": 54.63,
+        "totalE2E": 176.31
+      }
+    }
+  ]
+}

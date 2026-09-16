@@ -52,6 +52,8 @@
         "lib/decision/local-decision-engine.js",
         "lib/redactor/dom-redactor.js",
         "lib/redactor/canvas-redactor.js",
+        "lib/privacy/privacy-gate.js",
+        "lib/executor/action-validator.js",
         "lib/executor/action-executor.js",
         "lib/telemetry/instrumentation.js",
         "content.js",

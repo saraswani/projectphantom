@@ -5,6 +5,10 @@
   "scripts": {
     "generate-icons": "node generate-icons.js",
     "test": "node test/evaluate.js",
+    "test:privacy": "node evaluation/privacy/network-leak-test.js",
+    "test:security": "node evaluation/security/security-suite.js",
+    "benchmark": "node evaluation/run-all.js",
+    "evaluate:all": "npm test && npm run test:privacy && npm run test:security && npm run benchmark",
     "start-server": "node server/server.js"
   },
   "keywords": [

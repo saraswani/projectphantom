@@ -1,0 +1,19 @@
+{
+  "benchmark": "client_resource_utilization",
+  "sihWeight": "20%",
+  "timestamp": "2026-09-16T20:15:30.050Z",
+  "modelSizeMB": 0.44,
+  "initializationMs": 1.27,
+  "averageInferenceMs": 3.115,
+  "peakInferenceMs": 31.189,
+  "minInferenceMs": 1.198,
+  "redactionLatencyMs": 1.22,
+  "faceLatencyMs": 70.19,
+  "screenshotProcessingMs": 74.52,
+  "averageMemoryMB": 7.48,
+  "peakMemoryMB": 7.53,
+  "netMemoryDeltaMB": 0,
+  "cpuUtilizationPercent": 53.3,
+  "hardwareProvider": "WASM (WebAssembly SIMD)",
+  "isHardwareAccelerated": true
+}

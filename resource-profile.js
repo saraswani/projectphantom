@@ -8,10 +8,14 @@ const fs = require('fs');
 const path = require('path');
 const { performance } = require('perf_hooks');
 
-// Import Core Modules & Telemetry
-const { instrumentation } = require('../lib/telemetry/instrumentation');
-const { TextPIIDetector } = require('../lib/pii/text-detector');
-const { ScreenViTModel } = require('../lib/vision/screen-vit');
+// Import Core Modules & Telemetry (Support running from root or test/ directory)
+const resolveLib = (rel) => fs.existsSync(path.join(__dirname, 'lib', rel + '.js')) || fs.existsSync(path.join(__dirname, 'lib', rel))
+  ? require(path.join(__dirname, 'lib', rel))
+  : require(path.join(__dirname, '..', 'lib', rel));
+
+const { instrumentation } = resolveLib('telemetry/instrumentation');
+const { TextPIIDetector } = resolveLib('pii/text-detector');
+const { ScreenViTModel } = resolveLib('vision/screen-vit');
 
 console.log('========================================================================');
 console.log('💾 PrivacyShield - Client Resource & Memory Profile (ISRO SIH Metric #4)');
@@ -88,8 +92,8 @@ async function runResourceProfiler() {
     getImageData: () => ({ data: fakeData })
   };
 
-  // Fallback heuristic simulation
-  const { LocalFaceDetector } = require('../lib/vision/face-detector');
+  // 4. Face Detection Footprint
+  const { LocalFaceDetector } = resolveLib('vision/face-detector');
   const faceDetector = new LocalFaceDetector();
   const detectedFaces = faceDetector.detectHeuristicFaces(fakeCanvas, fakeCtx);
   const t1Face = performance.now();

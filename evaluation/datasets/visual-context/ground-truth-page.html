@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIH Visual Context Ground Truth Evaluation Page</title>
+  <style>
+    body { font-family: 'Segoe UI', system-ui, sans-serif; margin: 0; padding: 20px; background: #0f172a; color: #f8fafc; }
+    header, nav, main, footer { margin-bottom: 24px; border-radius: 8px; }
+    nav { background: #1e293b; padding: 12px 20px; display: flex; gap: 16px; align-items: center; }
+    nav a { color: #38bdf8; text-decoration: none; font-weight: 500; }
+    .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 24px; }
+    .card { background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 20px; }
+    .form-group { margin-bottom: 14px; }
+    label { display: block; margin-bottom: 4px; font-size: 13px; color: #94a3b8; }
+    input[type="text"], input[type="email"], input[type="password"], select {
+      width: 100%; padding: 8px 12px; background: #0f172a; border: 1px solid #475569; border-radius: 6px; color: #fff; box-sizing: border-box;
+    }
+    .btn { background: #2563eb; color: #fff; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600; }
+    .btn-secondary { background: #475569; }
+    table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+    th, td { text-align: left; padding: 10px; border-bottom: 1px solid #334155; }
+    th { background: #334155; }
+    .dialog-box { background: #1e293b; border: 2px solid #38bdf8; border-radius: 8px; padding: 16px; margin-top: 20px; }
+    .avatar-img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; }
+  </style>
+</head>
+<body>
+
+  <!-- 1. NAVIGATION -->
+  <nav id="main-nav">
+    <span style="font-weight:700; color:#fff;">Portal</span>
+    <a href="#dashboard" id="nav-link-dashboard">Dashboard</a>
+    <a href="#transactions" id="nav-link-transactions">Transactions</a>
+    <a href="#settings" id="nav-link-settings">Settings</a>
+  </nav>
+
+  <main>
+    <h1>User Profile & Secure Portal</h1>
+    <p id="portal-intro-text">Manage account access, transactions, and preferences on this portal.</p>
+
+    <div class="card-grid">
+      <!-- 2. FORM & INPUTS -->
+      <div class="card" id="card-user-info">
+        <h2>Account Details</h2>
+        <form id="profile-form">
+          <div class="form-group">
+            <label for="input-fullname">Full Name</label>
+            <input type="text" id="input-fullname" name="fullname" placeholder="e.g. Aarav Sharma" value="Aarav Sharma" />
+          </div>
+          <div class="form-group">
+            <label for="input-email">Email Address</label>
+            <input type="email" id="input-email" name="email" placeholder="e.g. aarav@example.com" value="aarav.sharma@example.com" />
+          </div>
+          <div class="form-group">
+            <label for="input-password">Account Password</label>
+            <input type="password" id="input-password" name="password" value="SecretPassword99!" />
+          </div>
+
+          <!-- 3. CHECKBOXES & RADIO BUTTONS -->
+          <div class="form-group">
+            <label><input type="checkbox" id="chk-2fa" name="twoFactor" checked /> Enable Two-Factor Auth</label>
+            <label><input type="checkbox" id="chk-alerts" name="smsAlerts" /> Receive SMS Transaction Alerts</label>
+          </div>
+          <div class="form-group">
+            <label><input type="radio" id="radio-comm-email" name="commPref" value="email" checked /> Email Communication</label>
+            <label><input type="radio" id="radio-comm-sms" name="commPref" value="sms" /> SMS Communication</label>
+          </div>
+
+          <!-- 4. DROPDOWN / SELECT MENU -->
+          <div class="form-group">
+            <label for="select-role">Account Tier</label>
+            <select id="select-role" name="role">
+              <option value="basic">Standard User</option>
+              <option value="pro" selected>Pro Scientist</option>
+              <option value="admin">Administrator</option>
+            </select>
+          </div>
+
+          <!-- 5. BUTTONS -->
+          <div style="display:flex; gap:10px; margin-top:16px;">
+            <button type="button" class="btn" id="btn-save-profile">Save Changes</button>
+            <button type="button" class="btn btn-secondary" id="btn-cancel">Cancel</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- 6. CARDS & IMAGES -->
+      <div class="card" id="card-profile-summary">
+        <h2>Visual Identity</h2>
+        <div style="display:flex; align-items:center; gap:16px; margin-bottom:16px;">
+          <img id="img-user-avatar" class="avatar-img" alt="User Avatar Photo"
+               src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64'><rect width='64' height='64' fill='%2338bdf8'/><circle cx='32' cy='24' r='14' fill='%23ffffff'/><path d='M16 54 C16 40 48 40 48 54 Z' fill='%23ffffff'/></svg>" />
+          <div>
+            <div style="font-weight:bold; font-size:16px;" id="text-user-name">Aarav Sharma</div>
+            <div style="color:#94a3b8; font-size:13px;" id="text-user-id">ID: IND-847291</div>
+          </div>
+        </div>
+        <p id="text-kyc-status">Identity verification status: <strong style="color:#34d399;">VERIFIED</strong></p>
+        <a href="#view-id" id="link-view-id" style="color:#38bdf8;">View KYC Documents &rarr;</a>
+      </div>
+    </div>
+
+    <!-- 7. DATA TABLE -->
+    <div class="card" id="card-transactions">
+      <h2>Recent Transactions</h2>
+      <table id="table-transactions">
+        <thead>
+          <tr>
+            <th>Txn ID</th>
+            <th>Date</th>
+            <th>Beneficiary</th>
+            <th>Account / VPA</th>
+            <th>Amount</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr id="row-txn-1">
+            <td>TXN-9021</td>
+            <td>2026-09-15</td>
+            <td>Vikram Sarabhai Research</td>
+            <td>vikram@upi</td>
+            <td>₹45,000</td>
+            <td><button class="btn" style="padding:4px 10px; font-size:12px;" id="btn-receipt-1">Receipt</button></td>
+          </tr>
+          <tr id="row-txn-2">
+            <td>TXN-9022</td>
+            <td>2026-09-16</td>
+            <td>Cloud Compute Services</td>
+            <td>compute-node@axis</td>
+            <td>₹12,400</td>
+            <td><button class="btn" style="padding:4px 10px; font-size:12px;" id="btn-receipt-2">Receipt</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 8. MODAL / DIALOG -->
+    <div class="dialog-box" id="dialog-confirm" role="dialog" aria-labelledby="dialog-title">
+      <h3 id="dialog-title" style="margin-top:0;">Session Security Confirmation</h3>
+      <p id="dialog-desc">You are currently logged into the on-device secure browser environment.</p>
+      <button class="btn" id="btn-dialog-ack">Acknowledge</button>
+    </div>
+  </main>
+
+  <footer>
+    <p id="footer-copy">&copy; 2026 Phantom AI — Autonomous Privacy-Preserving Browser Agent</p>
+  </footer>
+
+</body>
+</html>

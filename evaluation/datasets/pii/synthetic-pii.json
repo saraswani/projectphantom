@@ -1,0 +1,256 @@
+{
+  "name": "SIH Synthetic PII Benchmark Dataset",
+  "syntheticNote": "All data entries are 100% synthetic and randomly generated. No real citizen data is included.",
+  "items": [
+    {
+      "id": "PII-NAME-01",
+      "category": "Name",
+      "value": "Aarav Sharma",
+      "context": "Customer Name: Aarav Sharma registered for portal access.",
+      "shouldMatch": true,
+      "expectedToken": "PERSON"
+    },
+    {
+      "id": "PII-NAME-02",
+      "category": "Name",
+      "value": "Dr. Vikram Sarabhai",
+      "context": "Senior Scientist Dr. Vikram Sarabhai published the satellite mission schedule.",
+      "shouldMatch": true,
+      "expectedToken": "PERSON"
+    },
+    {
+      "id": "PII-EMAIL-01",
+      "category": "Email",
+      "value": "aarav.sharma.dev@gmail.com",
+      "context": "Please send the verification confirmation to aarav.sharma.dev@gmail.com.",
+      "shouldMatch": true,
+      "expectedToken": "EMAIL"
+    },
+    {
+      "id": "PII-EMAIL-02",
+      "category": "Email",
+      "value": "scientist@isro-partner.gov.in",
+      "context": "Official correspondence address: scientist@isro-partner.gov.in.",
+      "shouldMatch": true,
+      "expectedToken": "EMAIL"
+    },
+    {
+      "id": "PII-EMAIL-NEG-01",
+      "category": "Email",
+      "value": "invalid-email-at-format.com",
+      "context": "Faulty string detected: invalid-email-at-format.com in log output.",
+      "shouldMatch": false,
+      "expectedToken": null
+    },
+    {
+      "id": "PII-PHONE-01",
+      "category": "Phone",
+      "value": "+91 98765 43210",
+      "context": "Primary contact number for SMS alerts is +91 98765 43210.",
+      "shouldMatch": true,
+      "expectedToken": "PHONE"
+    },
+    {
+      "id": "PII-PHONE-02",
+      "category": "Phone",
+      "value": "9876543210",
+      "context": "Direct mobile dial string: 9876543210.",
+      "shouldMatch": true,
+      "expectedToken": "PHONE"
+    },
+    {
+      "id": "PII-PHONE-NEG-01",
+      "category": "Phone",
+      "value": "12345",
+      "context": "Internal queue counter value is 12345.",
+      "shouldMatch": false,
+      "expectedToken": null
+    },
+    {
+      "id": "PII-ADDR-01",
+      "category": "Address",
+      "value": "Flat 402, Satellite Enclave, Outer Ring Road, Bangalore",
+      "context": "Shipping residence address: Flat 402, Satellite Enclave, Outer Ring Road, Bangalore.",
+      "shouldMatch": true,
+      "expectedToken": "LOC"
+    },
+    {
+      "id": "PII-DOB-01",
+      "category": "Date of birth",
+      "value": "15/08/1992",
+      "context": "Citizen Date of Birth: 15/08/1992 on official record.",
+      "shouldMatch": true,
+      "expectedToken": "DOB"
+    },
+    {
+      "id": "PII-AUTH-PWD-01",
+      "category": "Password",
+      "value": "SecretPassword99!",
+      "context": "Account credentials payload with password: SecretPassword99! stored.",
+      "shouldMatch": true,
+      "expectedToken": "SECRET"
+    },
+    {
+      "id": "PII-AUTH-API-AWS",
+      "category": "API key",
+      "value": "AKIAIOSFODNN7EXAMPLE",
+      "context": "Access AWS key AKIAIOSFODNN7EXAMPLE configured in worker environment.",
+      "shouldMatch": true,
+      "expectedToken": "AWS_KEY"
+    },
+    {
+      "id": "PII-AUTH-API-GH",
+      "category": "API key",
+      "value": "ghp_111122223333444455556666777788889999",
+      "context": "GitHub deployment token ghp_111122223333444455556666777788889999 active.",
+      "shouldMatch": true,
+      "expectedToken": "GITHUB_TOKEN"
+    },
+    {
+      "id": "PII-AUTH-API-GOOG",
+      "category": "API key",
+      "value": "AIzaSyA_1234567890abcdefghijklmnopqrst",
+      "context": "Google API key AIzaSyA_1234567890abcdefghijklmnopqrst attached.",
+      "shouldMatch": true,
+      "expectedToken": "GOOGLE_KEY"
+    },
+    {
+      "id": "PII-AUTH-TOKEN-JWT",
+      "category": "Token",
+      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkFhcmF2In0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+      "context": "Bearer auth session token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkFhcmF2In0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c.",
+      "shouldMatch": true,
+      "expectedToken": "JWT"
+    },
+    {
+      "id": "PII-AUTH-SECRET-ENT",
+      "category": "Secret",
+      "value": "dGhpc0lzQVZlcnlIaWdoRW50cm9weVNlY3JldEtleTEyMzQ1Njc4OTA=",
+      "context": "Vault encryption secret: dGhpc0lzQVZlcnlIaWdoRW50cm9weVNlY3JldEtleTEyMzQ1Njc4OTA=.",
+      "shouldMatch": true,
+      "expectedToken": "SECRET"
+    },
+    {
+      "id": "PII-FIN-CARD-VISA",
+      "category": "Credit/debit card",
+      "value": "4532 0150 5190 7100",
+      "context": "Payment completed using card 4532 0150 5190 7100 successfully.",
+      "shouldMatch": true,
+      "expectedToken": "CARD"
+    },
+    {
+      "id": "PII-FIN-CARD-MC",
+      "category": "Credit/debit card",
+      "value": "5412 7512 5595 3373",
+      "context": "MasterCard number 5412 7512 5595 3373 charged.",
+      "shouldMatch": true,
+      "expectedToken": "CARD"
+    },
+    {
+      "id": "PII-FIN-CARD-NEG-LUHN",
+      "category": "Credit/debit card",
+      "value": "4532 0150 0000 0009",
+      "context": "Declined test transaction with invalid card checksum: 4532 0150 0000 0009.",
+      "shouldMatch": false,
+      "expectedToken": null
+    },
+    {
+      "id": "PII-FIN-BANK-ACC",
+      "category": "Bank account",
+      "value": "SBIN0001234:91234567890",
+      "context": "Disbursement dispatched to Bank Account: 91234567890 with IFSC SBIN0001234.",
+      "shouldMatch": true,
+      "expectedToken": "BANK_ACC"
+    },
+    {
+      "id": "PII-FIN-UPI-01",
+      "category": "UPI ID",
+      "value": "aarav.sharma@oksbi",
+      "context": "Send payment to VPA: aarav.sharma@oksbi via UPI.",
+      "shouldMatch": true,
+      "expectedToken": "UPI"
+    },
+    {
+      "id": "PII-FIN-UPI-02",
+      "category": "UPI ID",
+      "value": "research.lab@upi",
+      "context": "Merchant UPI handle is research.lab@upi for donations.",
+      "shouldMatch": true,
+      "expectedToken": "UPI"
+    },
+    {
+      "id": "PII-IND-AADHAAR-01",
+      "category": "Aadhaar",
+      "value": "2345 6789 0124",
+      "context": "Indian citizen Aadhaar UID: 2345 6789 0124 verified by UIDAI.",
+      "shouldMatch": true,
+      "expectedToken": "AADHAAR"
+    },
+    {
+      "id": "PII-IND-AADHAAR-02",
+      "category": "Aadhaar",
+      "value": "9876 5432 1096",
+      "context": "Applicant provided Aadhaar number 9876-5432-1096.",
+      "shouldMatch": true,
+      "expectedToken": "AADHAAR"
+    },
+    {
+      "id": "PII-IND-AADHAAR-NEG-VERHOEFF",
+      "category": "Aadhaar",
+      "value": "2345 6789 0129",
+      "context": "Invalid Aadhaar check digit rejected: 2345 6789 0129.",
+      "shouldMatch": false,
+      "expectedToken": null
+    },
+    {
+      "id": "PII-IND-AADHAAR-NEG-REPEATING",
+      "category": "Aadhaar",
+      "value": "0000 0000 0000",
+      "context": "Dummy repeating value 0000 0000 0000 should be ignored.",
+      "shouldMatch": false,
+      "expectedToken": null
+    },
+    {
+      "id": "PII-IND-PAN-01",
+      "category": "PAN",
+      "value": "ABCDE1234F",
+      "context": "Income Tax PAN card ABCDE1234F recorded for tax deduction.",
+      "shouldMatch": true,
+      "expectedToken": "PAN"
+    },
+    {
+      "id": "PII-IND-PAN-02",
+      "category": "PAN",
+      "value": "ALKPJ4521M",
+      "context": "Permanent Account Number ALKPJ4521M verified.",
+      "shouldMatch": true,
+      "expectedToken": "PAN"
+    },
+    {
+      "id": "PII-IND-PAN-NEG-FORMAT",
+      "category": "PAN",
+      "value": "12345ABCDE",
+      "context": "Reversed invalid structure 12345ABCDE must not match.",
+      "shouldMatch": false,
+      "expectedToken": null
+    },
+    {
+      "id": "PII-VISUAL-FACE-01",
+      "category": "Face",
+      "value": "human_face_1.jpg",
+      "context": "Profile photo of applicant on identification card.",
+      "isVisual": true,
+      "shouldMatch": true,
+      "expectedToken": "FACE"
+    },
+    {
+      "id": "PII-VISUAL-FACE-02",
+      "category": "Face",
+      "value": "human_face_2.jpg",
+      "context": "Attached headshot in passport application form.",
+      "isVisual": true,
+      "shouldMatch": true,
+      "expectedToken": "FACE"
+    }
+  ]
+}

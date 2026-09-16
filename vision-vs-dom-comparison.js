@@ -12,8 +12,13 @@ const fs = require('fs');
 const path = require('path');
 const { performance } = require('perf_hooks');
 
-const { TextPIIDetector } = require('../lib/pii/text-detector');
-const { ScreenViTModel } = require('../lib/vision/screen-vit');
+// Import Core Modules (Support running from root or test/ directory)
+const resolveLib = (rel) => fs.existsSync(path.join(__dirname, 'lib', rel + '.js')) || fs.existsSync(path.join(__dirname, 'lib', rel))
+  ? require(path.join(__dirname, 'lib', rel))
+  : require(path.join(__dirname, '..', 'lib', rel));
+
+const { TextPIIDetector } = resolveLib('pii/text-detector');
+const { ScreenViTModel } = resolveLib('vision/screen-vit');
 
 console.log('========================================================================');
 console.log('🔬 PrivacyShield - Vision Model Justification Comparison Benchmark');

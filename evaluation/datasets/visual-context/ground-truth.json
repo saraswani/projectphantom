@@ -1,0 +1,59 @@
+{
+  "dataset": "SIH Visual Context Benchmark Ground Truth",
+  "htmlFile": "ground-truth-page.html",
+  "totalExpectedElements": 34,
+  "categories": {
+    "buttons": {
+      "count": 5,
+      "selectors": ["#btn-save-profile", "#btn-cancel", "#btn-receipt-1", "#btn-receipt-2", "#btn-dialog-ack"]
+    },
+    "links": {
+      "count": 4,
+      "selectors": ["#nav-link-dashboard", "#nav-link-transactions", "#nav-link-settings", "#link-view-id"]
+    },
+    "text_nodes": {
+      "count": 6,
+      "selectors": ["#portal-intro-text", "#text-user-name", "#text-user-id", "#text-kyc-status", "#dialog-desc", "#footer-copy"]
+    },
+    "input_fields": {
+      "count": 3,
+      "selectors": ["#input-fullname", "#input-email", "#input-password"]
+    },
+    "checkboxes": {
+      "count": 2,
+      "selectors": ["#chk-2fa", "#chk-alerts"]
+    },
+    "radio_buttons": {
+      "count": 2,
+      "selectors": ["#radio-comm-email", "#radio-comm-sms"]
+    },
+    "menus": {
+      "count": 1,
+      "selectors": ["#select-role"]
+    },
+    "cards": {
+      "count": 3,
+      "selectors": ["#card-user-info", "#card-profile-summary", "#card-transactions"]
+    },
+    "tables": {
+      "count": 1,
+      "selectors": ["#table-transactions"]
+    },
+    "images": {
+      "count": 1,
+      "selectors": ["#img-user-avatar"]
+    },
+    "forms": {
+      "count": 1,
+      "selectors": ["#profile-form"]
+    },
+    "navigation": {
+      "count": 1,
+      "selectors": ["#main-nav"]
+    },
+    "dialogs": {
+      "count": 1,
+      "selectors": ["#dialog-confirm"]
+    }
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "benchmark": "redaction_precision_iou",
+  "sihWeight": "20%",
+  "timestamp": "2026-09-16T20:15:29.764Z",
+  "overallMeanIoU": 0.8708,
+  "overallMeanIoUPercent": "87.08%",
+  "redactionPrecision": 0.8797,
+  "redactionPrecisionPercent": "87.97%",
+  "redactionRecall": 1,
+  "redactionRecallPercent": "100.00%",
+  "leakageRate": 0,
+  "leakageRatePercent": "0.00%",
+  "overRedactionRate": 0.0027,
+  "overRedactionRatePercent": "0.27%",
+  "utilityPreservation": 0.9973,
+  "utilityPreservationPercent": "99.73%",
+  "sensitivePixelsProtected": 40260,
+  "sensitivePixelsExposed": 0,
+  "durationMs": 2.36,
+  "scenarioReports": [
+    {
+      "scenarioId": "scenario_form_redaction",
+      "name": "User Form PII Redaction",
+      "metrics": {
+        "groundTruthCount": 4,
+        "predictedCount": 4,
+        "meanIoU": 0.8568,
+        "meanIoUPercent": "85.68%",
+        "sensitivePixelsTotal": 21560,
+        "sensitivePixelsProtected": 21560,
+        "sensitivePixelsExposed": 0,
+        "nonSensitivePixelsTotal": 1002440,
+        "nonSensitivePixelsPreserved": 998848,
+        "nonSensitivePixelsOverRedacted": 3592,
+        "leakageRate": 0,
+        "leakageRatePercent": "0.00%",
+        "overRedactionRate": 0.0036,
+        "overRedactionRatePercent": "0.36%",
+        "utilityPreservation": 0.9964,
+        "utilityPreservationPercent": "99.64%",
+        "redactionPrecision": 0.8572,
+        "redactionRecall": 1
+      }
+    },
+    {
+      "scenarioId": "scenario_face_redaction",
+      "name": "Profile Face Overlay Masking",
+      "metrics": {
+        "groundTruthCount": 2,
+        "predictedCount": 2,
+        "meanIoU": 0.8989,
+        "meanIoUPercent": "89.89%",
+        "sensitivePixelsTotal": 18700,
+        "sensitivePixelsProtected": 18700,
+        "sensitivePixelsExposed": 0,
+        "nonSensitivePixelsTotal": 1005300,
+        "nonSensitivePixelsPreserved": 1003388,
+        "nonSensitivePixelsOverRedacted": 1912,
+        "leakageRate": 0,
+        "leakageRatePercent": "0.00%",
+        "overRedactionRate": 0.0019,
+        "overRedactionRatePercent": "0.19%",
+        "utilityPreservation": 0.9981,
+        "utilityPreservationPercent": "99.81%",
+        "redactionPrecision": 0.9072,
+        "redactionRecall": 1
+      }
+    }
+  ]
+}

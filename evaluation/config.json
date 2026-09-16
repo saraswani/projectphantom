@@ -1,0 +1,29 @@
+{
+  "name": "Phantom AI Evaluation Configuration",
+  "version": "1.0.0",
+  "thresholds": {
+    "minVisualContextAccuracy": 0.80,
+    "minPIIPrecision": 0.95,
+    "minPIIRecall": 0.95,
+    "minRedactionIoU": 0.70,
+    "maxLeakageRate": 0.00,
+    "maxOverRedactionRate": 0.05,
+    "maxHeapUsageMB": 50.0,
+    "maxE2ELatencyMs": 300.0
+  },
+  "latencyBenchmark": {
+    "trialsPerTask": 10,
+    "taskTypes": ["form_fill", "click", "scroll"],
+    "totalTrials": 30
+  },
+  "performanceBenchmark": {
+    "warmupRuns": 5,
+    "measuredRuns": 50
+  },
+  "paths": {
+    "reportsDir": "./evaluation/reports",
+    "visualContextDataset": "./evaluation/datasets/visual-context",
+    "piiDataset": "./evaluation/datasets/pii/synthetic-pii.json",
+    "redactionDataset": "./evaluation/datasets/redaction/redaction-cases.json"
+  }
+}

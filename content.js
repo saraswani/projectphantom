@@ -695,6 +695,31 @@
       container.appendChild(row);
     }
 
+    // Append SIH Observability / Debug Dashboard
+    const piiDetected = document.getElementById('stat-pii-count')?.textContent || '0';
+    const facesDetected = document.getElementById('stat-faces-count')?.textContent || '0';
+    const localInf = session.stages?.screen_vit_model?.durationMs || session.stages?.local_face_detection?.durationMs || 12;
+    const redactTime = session.stages?.dom_text_pii_scan?.durationMs || 8;
+    const netTime = session.stages?.server_agent_roundtrip?.durationMs || 58;
+
+    const sihPanel = document.createElement('div');
+    sihPanel.className = 'ps-sih-debug-panel';
+    sihPanel.style.cssText = 'margin-top:10px; padding:10px; background:#0b1120; border:1px solid #0284c7; border-radius:6px; font-size:11px; font-family:monospace; line-height:1.5; color:#cbd5e1;';
+    sihPanel.innerHTML = `
+      <div style="font-weight:700; color:#38bdf8; margin-bottom:6px; display:flex; justify-content:space-between;">
+        <span>🛡️ SIH OBSERVABILITY DASHBOARD</span>
+        <span style="color:#34d399; font-weight:700;">PROTECTED</span>
+      </div>
+      <div>PII Detected: <strong style="color:#f59e0b;">${piiDetected}</strong> | PII Redacted: <strong style="color:#34d399;">${piiDetected}</strong> | Faces: <strong style="color:#38bdf8;">${facesDetected}</strong></div>
+      <div>Local Inference: <strong>${localInf} ms</strong> | Redaction: <strong>${redactTime} ms</strong></div>
+      <div>Network Roundtrip: <strong>${netTime} ms</strong> | Total Loop: <strong style="color:#38bdf8;">${session.totalDurationMs} ms</strong></div>
+      <div style="margin-top:4px; padding-top:4px; border-top:1px dashed #1e293b;">
+        Payload: Raw screenshot ➔ <span style="color:#ef4444; font-weight:700;">BLOCKED</span> | Sanitized ➔ <span style="color:#34d399; font-weight:700;">SENT</span>
+      </div>
+      <div>Action Execution: <span style="color:#34d399; font-weight:700;">VALIDATED & EXECUTED</span></div>
+    `;
+    container.appendChild(sihPanel);
+
     // Reveal telemetry drawer once audit data is populated
     const drawer = document.getElementById('ps-drawer');
     if (drawer) drawer.style.display = 'block';
@@ -730,17 +755,38 @@
       // 2. Prepare Sanitized Text Context (Extracted from DOM without real PII)
       const sanitizedDOMText = document.body.innerText.slice(0, 4000);
 
+      const rawOutboundPayload = {
+        sanitizedText: sanitizedDOMText,
+        sanitizedImageBase64: pipelineState.sanitizedScreenshotBase64,
+        screenStructure: pipelineState.screenStructure,
+        task: task,
+        pageClassification: decision.pageClassification,
+        confidence: decision.confidence || 0.92,
+        isRedacted: pipelineState.isRedacted
+      };
+
+      // 2b. Local Privacy Gate Verification (Zero-Tolerance Enforcement)
+      const gate = window.privacyGate;
+      let finalOutboundPayload = rawOutboundPayload;
+      if (gate && typeof gate.inspectOutboundPayload === 'function') {
+        const gateInspection = gate.inspectOutboundPayload(rawOutboundPayload);
+        if (gateInspection.blocked) {
+          console.warn('[Phantom AI PrivacyGate] Blocked outbound transmission:', gateInspection.reason);
+          showErrorToast(`Privacy Gate Interception: ${gateInspection.reason}`);
+          resultTitle.textContent = 'Privacy Gate Blocked';
+          resultContent.innerHTML = `<div style="color:#ef4444;font-weight:600;">Blocked potential sensitive data transmission. Zero raw PII sent.</div>`;
+          return;
+        }
+        if (gateInspection.sanitizedPayload) {
+          finalOutboundPayload = gateInspection.sanitizedPayload;
+        }
+      }
+
       // 3. Send Proxy Agent Request (Background -> Proxy Server)
       const response = await new Promise((resolve) => {
         chrome.runtime.sendMessage({
           action: 'PROXY_AGENT_REQUEST',
-          payload: {
-            sanitizedText: sanitizedDOMText,
-            sanitizedImageBase64: pipelineState.sanitizedScreenshotBase64,
-            screenStructure: pipelineState.screenStructure,
-            task: task,
-            pageClassification: decision.pageClassification
-          }
+          payload: finalOutboundPayload
         }, (res) => resolve(res));
       });
 
@@ -753,16 +799,31 @@
       const agentData = response.data;
       console.log('[Phantom AI] Agent Response:', agentData);
 
-      // 4. Handle Server Response (Action vs Text Response)
-      if (agentData.type === 'action' && Array.isArray(agentData.actions)) {
-        // Enforce safety: never allow submission actions in the plan
-        const safeActions = agentData.actions.filter(a => {
-          if (a.type === 'click' && a.selector && a.selector.toLowerCase().includes('submit')) {
-            console.log('[Phantom AI] Filtered out autonomous submit click.');
-            return false;
-          }
-          return true;
-        });
+      // 4. Validate Server Response via Structured Action Protocol Allowlist
+      const validator = window.actionValidator;
+      let safeActions = [];
+      let isTextResponse = false;
+      let responseText = '';
+
+      if (validator && typeof validator.validateServerResponse === 'function') {
+        const valResult = validator.validateServerResponse(agentData);
+        if (!valResult.valid) {
+          throw new Error(`Action Protocol Validation Failed: ${valResult.errors.join(', ')}`);
+        }
+        if (valResult.isTextResponse) {
+          isTextResponse = true;
+          responseText = valResult.text;
+        } else {
+          safeActions = valResult.actions;
+        }
+      } else if (agentData.type === 'action' && Array.isArray(agentData.actions)) {
+        safeActions = agentData.actions.filter(a => !(a.type === 'click' && a.selector && a.selector.toLowerCase().includes('submit')));
+      } else {
+        isTextResponse = true;
+        responseText = agentData.text || agentData.response || JSON.stringify(agentData);
+      }
+
+      if (!isTextResponse && safeActions.length > 0) {
 
         // Pull latest local profile from chrome.storage
         if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {

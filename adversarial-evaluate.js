@@ -14,11 +14,15 @@ const fs = require('fs');
 const path = require('path');
 const { performance } = require('perf_hooks');
 
-// Import Unmodified Pipeline Engines
-const Verhoeff = require('../lib/pii/verhoeff');
-const Luhn = require('../lib/pii/luhn');
-const PIIRulesEngine = require('../lib/pii/regex-rules');
-const { TextPIIDetector } = require('../lib/pii/text-detector');
+// Import Unmodified Pipeline Engines (Support running from root or test/ directory)
+const resolveLib = (rel) => fs.existsSync(path.join(__dirname, 'lib', rel + '.js')) || fs.existsSync(path.join(__dirname, 'lib', rel))
+  ? require(path.join(__dirname, 'lib', rel))
+  : require(path.join(__dirname, '..', 'lib', rel));
+
+const Verhoeff = resolveLib('pii/verhoeff');
+const Luhn = resolveLib('pii/luhn');
+const PIIRulesEngine = resolveLib('pii/regex-rules');
+const { TextPIIDetector } = resolveLib('pii/text-detector');
 
 console.log('========================================================================');
 console.log('⚔️  PrivacyShield - Adversarial & Edge-Case PII Evaluation Benchmark');
