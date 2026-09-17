@@ -332,6 +332,75 @@
     }
 
     /**
+     * Redacts detected sensitive OCR text boxes on the live webpage DOM
+     * by injecting non-destructive overlay elements over sensitive fields.
+     * @param {Array} ocrBoxes - [{ x, y, width, height, field, tokens, value }]
+     * @returns {number} count of overlays injected
+     */
+    redactDOMOCRBoxes(ocrBoxes = []) {
+      if (!Array.isArray(ocrBoxes) || ocrBoxes.length === 0) return 0;
+
+      let count = 0;
+      for (const box of ocrBoxes) {
+        if (!box.width || !box.height || box.width < 4 || box.height < 4) continue;
+
+        const overlay = document.createElement('div');
+        overlay.className = 'ps-ocr-overlay ps-injected';
+        overlay.setAttribute('aria-hidden', 'true');
+
+        const left = Math.round(box.x + window.scrollX);
+        const top = Math.round(box.y + window.scrollY);
+        const w = Math.round(box.width);
+        const h = Math.round(box.height);
+
+        const token = (box.tokens && box.tokens[0]) ? box.tokens[0] : `[${box.field || 'REDACTED'}]`;
+        const fontSize = Math.max(7, Math.min(10, Math.floor(h * 0.65)));
+
+        overlay.style.cssText = `
+          position: absolute !important;
+          left: ${left}px !important;
+          top: ${top}px !important;
+          width: ${w}px !important;
+          height: ${h}px !important;
+          background: rgba(15, 23, 42, 0.94) !important;
+          border: 1.5px solid #f59e0b !important;
+          border-radius: 4px !important;
+          z-index: 2147483640 !important;
+          pointer-events: none !important;
+          display: flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5) !important;
+          user-select: none !important;
+          overflow: hidden !important;
+          box-sizing: border-box !important;
+        `;
+
+        overlay.innerHTML = `<span style="
+          background: rgba(245, 158, 11, 0.2);
+          color: #fbbf24;
+          padding: 1px 4px;
+          border-radius: 3px;
+          font-size: ${fontSize}px;
+          font-weight: 700;
+          font-family: ui-monospace, monospace;
+          letter-spacing: 0.03em;
+          white-space: nowrap;
+          max-width: 95%;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        ">${token}</span>`;
+
+        document.body.appendChild(overlay);
+        this.mutatedElements.push({ isOverlay: true, element: overlay });
+        count++;
+      }
+
+      console.log(`[PrivacyShield] OCR overlays injected: ${count}`);
+      return count;
+    }
+
+    /**
      * Toggles reveal/mask for an individual redacted badge.
      */
 
@@ -368,7 +437,7 @@
       }
 
       // Also clean up any lingering overlays
-      const overlays = document.querySelectorAll('.ps-face-overlay');
+      const overlays = document.querySelectorAll('.ps-face-overlay, .ps-ocr-overlay');
       overlays.forEach(el => el.remove());
 
       this.reset();

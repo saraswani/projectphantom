@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Phantom AI OCR Sandbox</title>
+</head>
+<body>
+  <script>
+    window.__PHANTOM_OCR_IS_SANDBOX__ = true;
+  </script>
+  <script src="tesseract.min.js"></script>
+  <script src="../ocr-worker.js"></script>
+  <script>
+    (function() {
+      console.log('[Phantom AI OCR Sandbox] Initializing sandbox environment...');
+
+      // Pre-warm OCR worker
+      if (window.ocrWorker) {
+        window.ocrWorker.init().then(() => {
+          console.log('[Phantom AI OCR Sandbox] Local OCR Worker ready in extension sandbox.');
+          try {
+            if (window.parent && window.parent !== window) {
+              window.parent.postMessage({ target: 'PHANTOM_OCR_CLIENT', action: 'SANDBOX_READY' }, '*');
+            }
+          } catch (_) {}
+        }).catch(err => {
+          console.warn('[Phantom AI OCR Sandbox] Pre-warm failed:', err);
+        });
+      }
+
+      window.addEventListener('message', async (event) => {
+        const data = event.data;
+        if (!data || data.target !== 'PHANTOM_OCR_SANDBOX') return;
+
+        const { id, action, imageInput } = data;
+        if (action === 'DETECT_SENSITIVE_BOXES') {
+          try {
+            if (!window.ocrWorker) throw new Error('ocrWorker not loaded in sandbox');
+            const res = await window.ocrWorker.detectSensitiveBoxes(imageInput);
+            event.source.postMessage({
+              id,
+              target: 'PHANTOM_OCR_CLIENT',
+              success: true,
+              result: res
+            }, '*');
+          } catch (err) {
+            console.warn('[Phantom AI OCR Sandbox] Detection error:', err);
+            event.source.postMessage({
+              id,
+              target: 'PHANTOM_OCR_CLIENT',
+              success: false,
+              error: err.message || String(err)
+            }, '*');
+          }
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

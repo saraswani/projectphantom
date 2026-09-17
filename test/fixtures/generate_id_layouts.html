@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Passport and ID Test Layouts</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      background: #f1f5f9;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    .card-container {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+    .doc-card {
+      width: 700px;
+      background: #faf7ee;
+      border: 2px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      position: relative;
+      box-sizing: border-box;
+      color: #1e293b;
+    }
+    .doc-header {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 2px solid #94a3b8;
+      padding-bottom: 8px;
+      margin-bottom: 16px;
+    }
+    .doc-title {
+      font-size: 18px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+    .doc-body {
+      display: grid;
+      grid-template-columns: 140px 1fr 1fr;
+      gap: 16px;
+    }
+    .photo-box {
+      width: 130px;
+      height: 160px;
+      background: #334155;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 10px;
+    }
+    .field-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .field-val {
+      font-size: 14px;
+      font-weight: bold;
+      color: #0f172a;
+      letter-spacing: 0.5px;
+    }
+    .signature-area {
+      border-bottom: 1px solid #000;
+      width: 160px;
+      height: 32px;
+      font-family: 'Brush Script MT', cursive, sans-serif;
+      font-size: 20px;
+      color: #0f172a;
+      display: flex;
+      align-items: flex-end;
+    }
+    .mrz-zone {
+      margin-top: 16px;
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 10px;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 15px;
+      font-weight: bold;
+      letter-spacing: 3px;
+      line-height: 1.4;
+      color: #000;
+    }
+  </style>
+</head>
+<body>
+
+<div class="card-container">
+  <!-- Layout 2: British / European ICAO Passport -->
+  <div class="doc-card" id="card-icao-uk">
+    <div class="doc-header">
+      <div class="doc-title">UNITED KINGDOM OF GREAT BRITAIN AND NORTHERN IRELAND</div>
+      <div class="doc-title">PASSPORT</div>
+    </div>
+    <div class="doc-body">
+      <div class="photo-box">PHOTO</div>
+      <div>
+        <div class="field-group">
+          <span class="field-label">Type / Country Code</span>
+          <span class="field-val">P GBR</span>
+        </div>
+        <div class="field-group">
+          <span class="field-label">Surname</span>
+          <span class="field-val">HENDRICK</span>
+        </div>
+        <div class="field-group">
+          <span class="field-label">Given Names</span>
+          <span class="field-val">ELEANOR JANE</span>
+        </div>
+        <div class="field-group">
+          <span class="field-label">Nationality</span>
+          <span class="field-val">BRITISH CITIZEN</span>
+        </div>
+        <div class="field-group">
+          <span class="field-label">Date of Birth</span>
+          <span class="field-val">24 AUG 1989</span>
+        </div>
+      </div>
+      <div>
+        <div class="field-group">
+          <span class="field-label">Passport No.</span>
+          <span class="field-val">502198421</span>
+        </div>
+        <div class="field-group">
+          <span class="field-label">Sex</span>
+          <span class="field-val">F</span>
+        </div>
+        <div class="field-group">
+          <span class="field-label">Place of Birth</span>
+          <span class="field-val">LONDON</span>
+        </div>
+        <div class="field-group">
+          <span class="field-label">Date of Issue</span>
+          <span class="field-val">14 JUN 2021</span>
+        </div>
+        <div class="field-group">
+          <span class="field-label">Date of Expiry</span>
+          <span class="field-val">14 JUN 2031</span>
+        </div>
+        <div class="field-group">
+          <span class="field-label">Holder's Signature</span>
+          <div class="signature-area">Eleanor Hendrick</div>
+        </div>
+      </div>
+    </div>
+    <div class="mrz-zone">
+      P&lt;GBRHENDRICK&lt;&lt;ELEANOR&lt;JANE&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;<br>
+      5021984210GBR8908246F3106144&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;02
+    </div>
+  </div>
+
+  <!-- Layout 3: Republic of India Passport -->
+  <div class="doc-card" id="card-india-passport">
+    <div class="doc-header">
+      <div class="doc-title">REPUBLIC OF INDIA / भारत गणराज्य</div>
+      <div class="doc-title">PASSPORT</div>
+    </div>
+    <div class="doc-body">
+      <div class="photo-box">PHOTO</div>
+      <div>
+        <div class="field-group">
+          <span class="field-label">Type / Country Code</span>
+          <span class="field-val">P IND</span>
+        </div>
+        <div class="field-group">
+          <span class="field-label">Passport No</span>
+          <span class="field-val">Z3849201</span>
+        </div>
+        <div class="field-group">
+          <span class="field-label">Surname</span>
+          <span class="field-val">CHATTERJEE</span>
+        </div>
+        <div class="field-group">
+          <span class="field-label">Given Name(s)</span>
+          <span class="field-val">SOUMYA</span>
+        </div>
+        <div class="field-group">
+          <span class="field-label">Nationality</span>
+          <span class="field-val">INDIAN</span>
+        </div>
+      </div>
+      <div>
+        <div class="field-group">
+          <span class="field-label">Sex</span>
+          <span class="field-val">M</span>
+        </div>
+        <div class="field-group">
+          <span class="field-label">Date of Birth</span>
+          <span class="field-val">08/11/1992</span>
+        </div>
+        <div class="field-group">
+          <span class="field-label">Place of Birth</span>
+          <span class="field-val">KOLKATA</span>
+        </div>
+        <div class="field-group">
+          <span class="field-label">Date of Issue</span>
+          <span class="field-val">22/03/2020</span>
+        </div>
+        <div class="field-group">
+          <span class="field-label">Date of Expiry</span>
+          <span class="field-val">21/03/2030</span>
+        </div>
+        <div class="field-group">
+          <span class="field-label">Signature</span>
+          <div class="signature-area">S. Chatterjee</div>
+        </div>
+      </div>
+    </div>
+    <div class="mrz-zone">
+      P&lt;INDCHATTERJEE&lt;&lt;SOUMYA&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;<br>
+      Z3849201&lt;2IND9211084M3003218&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;06
+    </div>
+  </div>
+
+  <!-- Layout 4: National Identity Card -->
+  <div class="doc-card" id="card-national-id">
+    <div class="doc-header">
+      <div class="doc-title">NATIONAL IDENTITY CARD / CARTE D'IDENTITE</div>
+      <div class="doc-title">ID NUMBER: ID9872410</div>
+    </div>
+    <div class="doc-body">
+      <div class="photo-box">PHOTO</div>
+      <div>
+        <div class="field-group">
+          <span class="field-label">Document No</span>
+          <span class="field-val">ID9872410</span>
+        </div>
+        <div class="field-group">
+          <span class="field-label">Surname</span>
+          <span class="field-val">MARTINEZ</span>
+        </div>
+        <div class="field-group">
+          <span class="field-label">Given Name</span>
+          <span class="field-val">CARLOS ANDRES</span>
+        </div>
+        <div class="field-group">
+          <span class="field-label">Date of Birth</span>
+          <span class="field-val">03 MAR 1995</span>
+        </div>
+      </div>
+      <div>
+        <div class="field-group">
+          <span class="field-label">Sex</span>
+          <span class="field-val">M</span>
+        </div>
+        <div class="field-group">
+          <span class="field-label">Nationality</span>
+          <span class="field-val">SPANISH</span>
+        </div>
+        <div class="field-group">
+          <span class="field-label">Place of Birth</span>
+          <span class="field-val">MADRID</span>
+        </div>
+        <div class="field-group">
+          <span class="field-label">Expiry Date</span>
+          <span class="field-val">03 MAR 2033</span>
+        </div>
+        <div class="field-group">
+          <span class="field-label">Signature</span>
+          <div class="signature-area">C. Martinez</div>
+        </div>
+      </div>
+    </div>
+    <div class="mrz-zone">
+      IDFRCMARTINEZ&lt;&lt;CARLOS&lt;ANDRES&lt;&lt;&lt;&lt;&lt;<br>
+      ID9872410&lt;8FRC9503038M3303034&lt;&lt;&lt;&lt;
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

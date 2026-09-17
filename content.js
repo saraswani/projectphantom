@@ -32,6 +32,11 @@
   const instrumentation = window.instrumentation;
   const getThreatScorer = () => window.computeThreatScore || (typeof computeThreatScore !== 'undefined' ? computeThreatScore : null);
 
+  // Pre-initialize OCR worker / sandbox in background
+  if (ocrWorker && typeof ocrWorker.init === 'function') {
+    ocrWorker.init().catch(() => {});
+  }
+
   // Pipeline State
   let pipelineState = {
     isScanning: false,
@@ -515,6 +520,31 @@
       }
       instrumentation.endStage('local_face_detection', { facesCount: detectedFaces.length, backend: faceStatus.activeBackend });
 
+      // 2b. Local OCR & Document PII Detection on Page Images (Passports, IDs, Documents)
+      let pageOcrBoxes = [];
+      let screenshotOcrBoxes = [];
+      if (typeof ocrWorker !== 'undefined' && ocrWorker && typeof ocrWorker.scanPageImages === 'function') {
+        try {
+          updateProgress(35, 'Scanning Document Images for Sensitive PII...', 'badge-ocr');
+          const pageOcrRes = await Promise.race([
+            ocrWorker.scanPageImages(),
+            new Promise(res => setTimeout(() => res({ domOcrBoxes: [], screenshotOcrBoxes: [] }), 8000))
+          ]);
+          if (pageOcrRes && pageOcrRes.domOcrBoxes && pageOcrRes.domOcrBoxes.length > 0) {
+            pageOcrBoxes = pageOcrRes.domOcrBoxes;
+            screenshotOcrBoxes = pageOcrRes.screenshotOcrBoxes || [];
+            
+            // --- LIVE DOM OCR OVERLAY REDACTION (Passports, IDs) ---
+            if (domRedactor && typeof domRedactor.redactDOMOCRBoxes === 'function') {
+              const injectedOcrCount = domRedactor.redactDOMOCRBoxes(pageOcrBoxes);
+              console.log(`[Phantom AI] Injected ${injectedOcrCount} live DOM OCR redaction overlays.`);
+            }
+          }
+        } catch (ocrImgErr) {
+          console.warn('[Phantom AI] Page images OCR failed gracefully:', ocrImgErr);
+        }
+      }
+
       // 3. Screen-Understanding & UI Structure Model (Component 1)
       updateProgress(45, 'Executing Local Screen-Understanding Model...', 'badge-screen');
       instrumentation.startStage('screen_structure_model');
@@ -533,16 +563,28 @@
       });
 
       let sanitizedImageBase64 = null;
-      let ocrRedactionCount = 0;
-      let ocrBoxes = [];
+      let ocrRedactionCount = screenshotOcrBoxes.length;
+      let ocrBoxes = [...screenshotOcrBoxes];
 
       if (captureResponse && captureResponse.success && captureResponse.dataUrl) {
-        // --- 4a. OCR Text Recognition on Screenshot ---
-        updateProgress(70, 'Running Local OCR on Screenshot...', 'badge-ocr');
-        instrumentation.startStage('ocr_text_extraction');
-        
-        // Fast-path OCR: OCR worker remains intact in codebase, non-blocking check
-        instrumentation.endStage('ocr_text_extraction', { ocrRedactionCount: 0 });
+        // --- 4a. OCR Text Recognition on Screenshot (if no page image OCR detected) ---
+        if (ocrBoxes.length === 0 && typeof ocrWorker !== 'undefined' && ocrWorker && typeof ocrWorker.detectSensitiveBoxes === 'function') {
+          updateProgress(70, 'Running Local OCR on Screenshot...', 'badge-ocr');
+          instrumentation.startStage('ocr_text_extraction');
+          try {
+            const ocrRes = await Promise.race([
+              ocrWorker.detectSensitiveBoxes(captureResponse.dataUrl),
+              new Promise(res => setTimeout(() => res({ ocrBoxes: [] }), 8000))
+            ]);
+            if (ocrRes && ocrRes.ocrBoxes && ocrRes.ocrBoxes.length > 0) {
+              ocrBoxes = ocrRes.ocrBoxes;
+              ocrRedactionCount = ocrBoxes.length;
+            }
+          } catch (ocrErr) {
+            console.warn('[PrivacyShield] Screenshot OCR detection error:', ocrErr);
+          }
+          instrumentation.endStage('ocr_text_extraction', { ocrRedactionCount });
+        }
 
         // --- 4b. Canvas Pixel Redaction ---
         const redactCanvasResult = await canvasRedactor.redactScreenshot(
