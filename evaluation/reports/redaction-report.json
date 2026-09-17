@@ -1,7 +1,7 @@
 {
   "benchmark": "redaction_precision_iou",
   "sihWeight": "20%",
-  "timestamp": "2026-09-16T20:15:29.764Z",
+  "timestamp": "2026-09-17T05:29:01.800Z",
   "overallMeanIoU": 0.8708,
   "overallMeanIoUPercent": "87.08%",
   "redactionPrecision": 0.8797,
@@ -16,7 +16,7 @@
   "utilityPreservationPercent": "99.73%",
   "sensitivePixelsProtected": 40260,
   "sensitivePixelsExposed": 0,
-  "durationMs": 2.36,
+  "durationMs": 3.08,
   "scenarioReports": [
     {
       "scenarioId": "scenario_form_redaction",

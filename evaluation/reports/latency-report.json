@@ -1,172 +1,172 @@
 {
   "benchmark": "end_to_end_latency",
   "sihWeight": "15%",
-  "timestamp": "2026-09-16T20:15:34.976Z",
+  "timestamp": "2026-09-17T05:29:05.670Z",
   "totalTrials": 30,
   "e2eStats": {
     "count": 30,
-    "min": 98.22,
-    "max": 300.79,
-    "mean": 163.5,
-    "median": 137.29,
-    "p95": 297.62,
-    "p99": 300.79,
-    "stdDev": 55.74
+    "min": 100.35,
+    "max": 146.97,
+    "mean": 125.06,
+    "median": 123.23,
+    "p95": 146.41,
+    "p99": 146.97,
+    "stdDev": 13.1
   },
   "localProcessingStats": {
     "count": 30,
-    "min": 29.94,
-    "max": 139.3,
-    "mean": 62.53,
-    "median": 51.87,
-    "p95": 132.68,
-    "p99": 139.3,
-    "stdDev": 31.73
+    "min": 26.64,
+    "max": 53.95,
+    "mean": 40.29,
+    "median": 39.07,
+    "p95": 53.06,
+    "p99": 53.95,
+    "stdDev": 7.65
   },
   "serverAndNetworkStats": {
     "count": 30,
-    "min": 48.71,
-    "max": 136.36,
-    "mean": 72.5,
-    "median": 68.28,
-    "p95": 95.78,
-    "p99": 136.36,
-    "stdDev": 17.04
+    "min": 45.74,
+    "max": 84.18,
+    "mean": 63.52,
+    "median": 62.12,
+    "p95": 81.44,
+    "p99": 84.18,
+    "stdDev": 10.23
   },
   "actionExecutionStats": {
     "count": 30,
-    "min": 12.11,
-    "max": 68.71,
-    "mean": 27.8,
-    "median": 27.52,
-    "p95": 64.67,
-    "p99": 68.71,
-    "stdDev": 14.69
+    "min": 14.75,
+    "max": 31.01,
+    "mean": 21.03,
+    "median": 22.67,
+    "p95": 30.9,
+    "p99": 31.01,
+    "stdDev": 6.03
   },
   "trialsSummary": [
     {
       "trialIndex": 1,
       "taskType": "form_fill",
       "timestamps": {
-        "T0": 1018.3234,
-        "T1": 1056.7308,
-        "T2": 1061.7349,
-        "T3": 1077.4694,
-        "T4": 1104.6235,
-        "T5": 1106.0106,
-        "T6": 1190.0283,
-        "T7": 1218.3739
+        "T0": 469.2347,
+        "T1": 490.1792,
+        "T2": 491.2901,
+        "T3": 491.6466,
+        "T4": 504.0446,
+        "T5": 505.1962,
+        "T6": 573.9972,
+        "T7": 590.7285
       },
       "durations": {
-        "screenCapture": 38.41,
-        "visualPerception": 5,
-        "piiDetection": 15.73,
-        "localRedaction": 27.15,
-        "localProcessingTotal": 86.3,
-        "networkSend": 1.39,
-        "serverAndNetwork": 84.02,
-        "actionExecution": 28.35,
-        "totalE2E": 200.05
+        "screenCapture": 20.94,
+        "visualPerception": 1.11,
+        "piiDetection": 0.36,
+        "localRedaction": 12.4,
+        "localProcessingTotal": 34.81,
+        "networkSend": 1.15,
+        "serverAndNetwork": 68.8,
+        "actionExecution": 16.73,
+        "totalE2E": 121.49
       }
     },
     {
       "trialIndex": 2,
       "taskType": "form_fill",
       "timestamps": {
-        "T0": 1218.5605,
-        "T1": 1282.4465,
-        "T2": 1286.7643,
-        "T3": 1286.9481,
-        "T4": 1326.9916,
-        "T5": 1327.2792,
-        "T6": 1423.0573,
-        "T7": 1458.588
+        "T0": 590.9456,
+        "T1": 623.627,
+        "T2": 624.638,
+        "T3": 624.8252,
+        "T4": 639.1285,
+        "T5": 639.3163,
+        "T6": 698.0161,
+        "T7": 723.4065
       },
       "durations": {
-        "screenCapture": 63.89,
-        "visualPerception": 4.32,
-        "piiDetection": 0.18,
-        "localRedaction": 40.04,
-        "localProcessingTotal": 108.43,
-        "networkSend": 0.29,
-        "serverAndNetwork": 95.78,
-        "actionExecution": 35.53,
-        "totalE2E": 240.03
+        "screenCapture": 32.68,
+        "visualPerception": 1.01,
+        "piiDetection": 0.19,
+        "localRedaction": 14.3,
+        "localProcessingTotal": 48.18,
+        "networkSend": 0.19,
+        "serverAndNetwork": 58.7,
+        "actionExecution": 25.39,
+        "totalE2E": 132.46
       }
     },
     {
       "trialIndex": 3,
       "taskType": "form_fill",
       "timestamps": {
-        "T0": 1458.6817,
-        "T1": 1487.3258,
-        "T2": 1488.6081,
-        "T3": 1488.7832,
-        "T4": 1521.0905,
-        "T5": 1521.288,
-        "T6": 1593.6545,
-        "T7": 1624.7726
+        "T0": 723.5088,
+        "T1": 749.2585,
+        "T2": 750.0867,
+        "T3": 750.2922,
+        "T4": 772.2817,
+        "T5": 772.4294,
+        "T6": 841.9375,
+        "T7": 857.1561
       },
       "durations": {
-        "screenCapture": 28.64,
-        "visualPerception": 1.28,
-        "piiDetection": 0.18,
-        "localRedaction": 32.31,
-        "localProcessingTotal": 62.41,
-        "networkSend": 0.2,
-        "serverAndNetwork": 72.37,
-        "actionExecution": 31.12,
-        "totalE2E": 166.09
+        "screenCapture": 25.75,
+        "visualPerception": 0.83,
+        "piiDetection": 0.21,
+        "localRedaction": 21.99,
+        "localProcessingTotal": 48.77,
+        "networkSend": 0.15,
+        "serverAndNetwork": 69.51,
+        "actionExecution": 15.22,
+        "totalE2E": 133.65
       }
     },
     {
       "trialIndex": 4,
       "taskType": "form_fill",
       "timestamps": {
-        "T0": 1624.8536,
-        "T1": 1651.4933,
-        "T2": 1652.9238,
-        "T3": 1653.2383,
-        "T4": 1689.8345,
-        "T5": 1690.0262,
-        "T6": 1771.5426,
-        "T7": 1799.1123
+        "T0": 857.2392,
+        "T1": 888.5657,
+        "T2": 889.4505,
+        "T3": 889.5891,
+        "T4": 903.6013,
+        "T5": 903.8034,
+        "T6": 987.9796,
+        "T7": 1003.6519
       },
       "durations": {
-        "screenCapture": 26.64,
-        "visualPerception": 1.43,
-        "piiDetection": 0.31,
-        "localRedaction": 36.6,
-        "localProcessingTotal": 64.98,
-        "networkSend": 0.19,
-        "serverAndNetwork": 81.52,
-        "actionExecution": 27.57,
-        "totalE2E": 174.26
+        "screenCapture": 31.33,
+        "visualPerception": 0.88,
+        "piiDetection": 0.14,
+        "localRedaction": 14.01,
+        "localProcessingTotal": 46.36,
+        "networkSend": 0.2,
+        "serverAndNetwork": 84.18,
+        "actionExecution": 15.67,
+        "totalE2E": 146.41
       }
     },
     {
       "trialIndex": 5,
       "taskType": "form_fill",
       "timestamps": {
-        "T0": 1799.1783,
-        "T1": 1833.1526,
-        "T2": 1834.4794,
-        "T3": 1834.6729,
-        "T4": 1844.2774,
-        "T5": 1844.4947,
-        "T6": 1920.8546,
-        "T7": 1975.4874
+        "T0": 1003.7561,
+        "T1": 1034.8703,
+        "T2": 1035.8825,
+        "T3": 1036.0634,
+        "T4": 1056.8181,
+        "T5": 1057.0243,
+        "T6": 1118.7771,
+        "T7": 1134.0698
       },
       "durations": {
-        "screenCapture": 33.97,
-        "visualPerception": 1.33,
-        "piiDetection": 0.19,
-        "localRedaction": 9.6,
-        "localProcessingTotal": 45.1,
-        "networkSend": 0.22,
-        "serverAndNetwork": 76.36,
-        "actionExecution": 54.63,
-        "totalE2E": 176.31
+        "screenCapture": 31.11,
+        "visualPerception": 1.01,
+        "piiDetection": 0.18,
+        "localRedaction": 20.75,
+        "localProcessingTotal": 53.06,
+        "networkSend": 0.21,
+        "serverAndNetwork": 61.75,
+        "actionExecution": 15.29,
+        "totalE2E": 130.31
       }
     }
   ]

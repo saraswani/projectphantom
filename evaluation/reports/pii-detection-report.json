@@ -1,7 +1,7 @@
 {
   "benchmark": "pii_precision_recall",
   "sihWeight": "20%",
-  "timestamp": "2026-09-16T20:15:29.620Z",
+  "timestamp": "2026-09-17T05:29:01.724Z",
   "totalItems": 31,
   "overallMetrics": {
     "tp": 25,
@@ -18,7 +18,7 @@
     "f1Percent": "100.00%",
     "accuracyPercent": "100.00%"
   },
-  "durationMs": 114.89,
+  "durationMs": 48.01,
   "perCategoryReport": {
     "Name": {
       "tp": 2,

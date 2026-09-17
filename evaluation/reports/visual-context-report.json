@@ -1,7 +1,7 @@
 {
   "benchmark": "visual_context_accuracy",
   "sihWeight": "25%",
-  "timestamp": "2026-09-16T20:15:29.450Z",
+  "timestamp": "2026-09-17T05:29:01.669Z",
   "totalExpectedElements": 34,
   "totalDetectedElements": 31,
   "correctElements": 31,
@@ -9,7 +9,7 @@
   "precision": 1,
   "recall": 1,
   "f1": 1,
-  "durationMs": 145.14,
+  "durationMs": 43.86,
   "vitClassification": {
     "status": "success",
     "visualPageType": "document_reader",
@@ -21,8 +21,8 @@
       "patchEmbeddings": 196
     },
     "executionProvider": "WASM (WebAssembly SIMD)",
-    "loadTimeMs": 84.35,
-    "inferenceLatencyMs": 51.15
+    "loadTimeMs": 21.01,
+    "inferenceLatencyMs": 12.28
   },
   "categoryResults": {
     "buttons": {

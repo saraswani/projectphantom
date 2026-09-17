@@ -1,7 +1,7 @@
 {
   "title": "Phantom AI Official SIH Evaluation Master Summary",
-  "evaluationDate": "2026-09-16T20:15:35.014Z",
-  "totalExecutionTimeMs": 5711.47,
+  "evaluationDate": "2026-09-17T05:29:05.692Z",
+  "totalExecutionTimeMs": 4068.77,
   "metrics": {
     "visualContextAccuracy": {
       "weight": "25%",
@@ -49,11 +49,11 @@
       "weight": "20%",
       "weightFloat": 0.2,
       "modelSizeMB": 0.44,
-      "averageMemoryMB": 7.48,
-      "peakMemoryMB": 7.53,
+      "averageMemoryMB": 7.38,
+      "peakMemoryMB": 7.48,
       "netMemoryDeltaMB": 0,
-      "averageInferenceMs": 3.115,
-      "redactionLatencyMs": 1.22,
+      "averageInferenceMs": 1.72,
+      "redactionLatencyMs": 1.68,
       "hardwareProvider": "WASM (WebAssembly SIMD)",
       "memoryCeilingMB": 50,
       "conformance": "EXCEEDS TARGET"
@@ -62,11 +62,11 @@
       "weight": "15%",
       "weightFloat": 0.15,
       "totalTrials": 30,
-      "averageLatencyMs": 163.5,
-      "medianLatencyMs": 137.29,
-      "p95LatencyMs": 297.62,
-      "minLatencyMs": 98.22,
-      "maxLatencyMs": 300.79,
+      "averageLatencyMs": 125.06,
+      "medianLatencyMs": 123.23,
+      "p95LatencyMs": 146.41,
+      "minLatencyMs": 100.35,
+      "maxLatencyMs": 146.97,
       "latencyCeilingMs": 300,
       "conformance": "EXCEEDS TARGET"
     }
@@ -80,14 +80,14 @@
     "securityPassRate": "100.00%"
   },
   "compositeScore": {
-    "totalScore": 86.23,
+    "totalScore": 88.17,
     "maxPossibleScore": 100,
     "breakdown": {
       "visualContextScore": "25 / 25",
       "piiDetectionScore": "20 / 20",
       "redactionPrecisionScore": "17.42 / 20",
-      "resourceUtilizationScore": "16.99 / 20",
-      "endToEndLatencyScore": "6.83 / 15"
+      "resourceUtilizationScore": "17.01 / 20",
+      "endToEndLatencyScore": "8.75 / 15"
     }
   }
 }
