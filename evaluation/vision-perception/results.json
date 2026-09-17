@@ -1,0 +1,48 @@
+{
+  "benchmarkTitle": "Phantom AI Local Neural Vision Perception Benchmark",
+  "timestamp": "2026-09-17T14:24:26.261Z",
+  "modelInfo": {
+    "modelId": "YOLOv8-UI-Detector (Pretrained ONNX)",
+    "architecture": "YOLOv8-Nano UI Object Detector",
+    "weightsOrigin": "amigodev/ui-elements-detector-test (HuggingFace)",
+    "weightsFormat": "ONNX FP32 (lib/vision/models/ui-detector.onnx)",
+    "executionProvider": "WASM (WebAssembly SIMD)",
+    "inputResolution": "640x640",
+    "loadTimeMs": 2352.7
+  },
+  "performanceTiming": {
+    "firstInferenceMs": 1654.02,
+    "warmInferenceMs": 1654.02,
+    "averageInferenceMs": 1654.02,
+    "p95InferenceMs": 1654.02,
+    "totalInferences": 1
+  },
+  "detectionQuality": {
+    "truePositives": 1,
+    "falsePositives": 24,
+    "falseNegatives": 17,
+    "precision": 0.04,
+    "precisionPercent": "4.00%",
+    "recall": 0.0556,
+    "recallPercent": "5.56%",
+    "f1Score": 0.0465,
+    "f1Percent": "4.65%",
+    "meanIoU": 0.2581,
+    "meanIoUPercent": "25.81%"
+  },
+  "screenReports": [
+    {
+      "screenId": "ground-truth-screen",
+      "predictionsCount": 25,
+      "groundTruthCount": 18,
+      "tp": 1,
+      "fp": 24,
+      "fn": 17,
+      "precision": 0.04,
+      "recall": 0.05555555555555555,
+      "f1": 0.046511627906976744,
+      "meanIoU": 0.25813623857035656,
+      "latencyMs": 1654.02
+    }
+  ]
+}

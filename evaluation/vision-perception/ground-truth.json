@@ -1,0 +1,30 @@
+{
+  "description": "Independent Ground Truth Annotations for UI Vision Perception Benchmark",
+  "screens": [
+    {
+      "id": "ground-truth-screen",
+      "imagePath": "evaluation/datasets/visual-context/ground-truth-screen.png",
+      "viewport": { "width": 1280, "height": 800 },
+      "groundTruthElements": [
+        { "id": "gt_nav_1", "type": "link", "bbox": { "x": 90, "y": 20, "width": 95, "height": 25 } },
+        { "id": "gt_nav_2", "type": "link", "bbox": { "x": 200, "y": 20, "width": 110, "height": 25 } },
+        { "id": "gt_nav_3", "type": "link", "bbox": { "x": 325, "y": 20, "width": 80, "height": 25 } },
+        { "id": "gt_heading_1", "type": "heading", "bbox": { "x": 20, "y": 80, "width": 450, "height": 40 } },
+        { "id": "gt_text_1", "type": "text-region", "bbox": { "x": 20, "y": 130, "width": 600, "height": 25 } },
+        { "id": "gt_card_1", "type": "card", "bbox": { "x": 20, "y": 180, "width": 600, "height": 500 } },
+        { "id": "gt_heading_2", "type": "heading", "bbox": { "x": 40, "y": 200, "width": 200, "height": 30 } },
+        { "id": "gt_label_1", "type": "label", "bbox": { "x": 40, "y": 245, "width": 100, "height": 20 } },
+        { "id": "gt_input_1", "type": "input", "bbox": { "x": 40, "y": 270, "width": 560, "height": 40 } },
+        { "id": "gt_label_2", "type": "label", "bbox": { "x": 40, "y": 325, "width": 120, "height": 20 } },
+        { "id": "gt_input_2", "type": "input", "bbox": { "x": 40, "y": 350, "width": 560, "height": 40 } },
+        { "id": "gt_label_3", "type": "label", "bbox": { "x": 40, "y": 405, "width": 150, "height": 20 } },
+        { "id": "gt_input_3", "type": "input", "bbox": { "x": 40, "y": 430, "width": 560, "height": 40 } },
+        { "id": "gt_btn_1", "type": "button", "bbox": { "x": 40, "y": 600, "width": 140, "height": 40 } },
+        { "id": "gt_btn_2", "type": "button", "bbox": { "x": 195, "y": 600, "width": 100, "height": 40 } },
+        { "id": "gt_card_2", "type": "card", "bbox": { "x": 660, "y": 180, "width": 580, "height": 500 } },
+        { "id": "gt_img_1", "type": "image", "bbox": { "x": 680, "y": 220, "width": 80, "height": 80 } },
+        { "id": "gt_text_2", "type": "text-region", "bbox": { "x": 780, "y": 230, "width": 200, "height": 30 } }
+      ]
+    }
+  ]
+}

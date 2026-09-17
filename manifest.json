@@ -49,6 +49,8 @@
         "lib/vision/screen-analyzer.js",
         "lib/vision/ort/ort.all.min.js",
         "lib/vision/screen-vit.js",
+        "lib/vision/ui-perception/ui-detector.js",
+        "lib/vision/ui-perception/vision-adapter.js",
         "lib/decision/threat-score.js",
         "lib/decision/local-decision-engine.js",
         "lib/redactor/dom-redactor.js",
@@ -77,6 +79,7 @@
         "lib/vision/ort/*",
         "lib/vision/model/*",
         "lib/vision/models/*",
+        "lib/vision/ui-perception/*",
         "icons/*",
 
         "styles/*"
