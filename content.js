@@ -174,20 +174,19 @@
     const mainFab = host.querySelector('#ps-main-fab');
     const fabMenu = host.querySelector('#ps-fab-menu');
     const fabContainer = host.querySelector('.ps-fab-container');
-    
     let hideFabMenuTimer = null;
     const hideEphemeralUI = () => {
-      fabMenu.classList.remove('visible');
-      // Hide the task input box if user is not actively focused on typing
+      if (isDragging) return;
       const taskInput = host.querySelector('#ps-task-input');
+      if (taskInput && document.activeElement === taskInput) return;
+
+      fabMenu.classList.remove('visible');
       const taskBox = host.querySelector('#ps-task-box');
-      if (taskBox && (!taskInput || document.activeElement !== taskInput)) {
+      if (taskBox) {
         taskBox.style.display = 'none';
       }
-      // Hide result toast
       const resultCard = host.querySelector('#ps-result-card');
       if (resultCard) resultCard.style.display = 'none';
-      // Hide telemetry drawer
       const drawer = host.querySelector('#ps-drawer');
       if (drawer) drawer.style.display = 'none';
     };
@@ -199,7 +198,13 @@
     fabMenu.addEventListener('mouseenter', () => {
       if (hideFabMenuTimer) clearTimeout(hideFabMenuTimer);
     });
+    fabContainer.addEventListener('mouseenter', () => {
+      if (hideFabMenuTimer) clearTimeout(hideFabMenuTimer);
+    });
     fabContainer.addEventListener('mouseleave', () => {
+      if (isDragging) return;
+      const taskInput = host.querySelector('#ps-task-input');
+      if (taskInput && document.activeElement === taskInput) return;
       hideFabMenuTimer = setTimeout(() => {
         hideEphemeralUI();
       }, 4000);
@@ -207,14 +212,18 @@
 
     // Dismiss ephemeral UI when clicking outside of phantom controls
     document.addEventListener('mousedown', (e) => {
+      if (isDragging) return;
       const taskBox = host.querySelector('#ps-task-box');
       const drawer = host.querySelector('#ps-drawer');
       const resultCard = host.querySelector('#ps-result-card');
       
-      const inFab = fabContainer && fabContainer.contains(e.target);
-      const inDrawer = drawer && drawer.contains(e.target);
+      const inControls = e.target && (
+        (fabContainer && fabContainer.contains(e.target)) ||
+        (drawer && drawer.contains(e.target)) ||
+        (e.target.closest && e.target.closest('#privacyshield-root'))
+      );
 
-      if (!inFab && !inDrawer) {
+      if (!inControls) {
         fabMenu.classList.remove('visible');
         if (taskBox && taskBox.style.display !== 'none') {
           taskBox.style.display = 'none';
@@ -232,10 +241,8 @@
     let hasDragged = false;
     let dragStartX = 0;
     let dragStartY = 0;
-    let initialLeft = 0;
-    let initialTop = 0;
-    let containerWidth = 0;
-    let containerHeight = 0;
+    let initialFabCenterX = 0;
+    let initialFabCenterY = 0;
 
     mainFab.addEventListener('mousedown', (e) => {
       if (e.button !== 0) return;
@@ -243,13 +250,13 @@
       hasDragged = false;
       dragStartX = e.clientX;
       dragStartY = e.clientY;
-      const rect = fabContainer.getBoundingClientRect();
-      initialLeft = rect.left;
-      initialTop = rect.top;
-      containerWidth = rect.width;
-      containerHeight = rect.height;
-      // Do not mutate style.left/top or remove bottom/right on simple mousedown!
-      // This prevents click glitching or layout jumps when clicking without dragging.
+      const rect = mainFab.getBoundingClientRect();
+      initialFabCenterX = rect.left + rect.width / 2;
+      initialFabCenterY = rect.top + rect.height / 2;
+      if (hideFabMenuTimer) {
+        clearTimeout(hideFabMenuTimer);
+        hideFabMenuTimer = null;
+      }
     });
 
     document.addEventListener('mousemove', (e) => {
@@ -258,29 +265,61 @@
       const dy = e.clientY - dragStartY;
       if (!hasDragged && (Math.abs(dx) > 4 || Math.abs(dy) > 4)) {
         hasDragged = true;
-        fabContainer.style.right = 'auto';
-        fabContainer.style.bottom = 'auto';
       }
       if (hasDragged) {
-        const maxX = Math.max(10, window.innerWidth - containerWidth - 10);
-        const maxY = Math.max(10, window.innerHeight - containerHeight - 10);
-        const nextX = Math.min(Math.max(10, initialLeft + dx), maxX);
-        const nextY = Math.min(Math.max(10, initialTop + dy), maxY);
-        fabContainer.style.left = nextX + 'px';
-        fabContainer.style.top = nextY + 'px';
+        if (hideFabMenuTimer) {
+          clearTimeout(hideFabMenuTimer);
+          hideFabMenuTimer = null;
+        }
+        const targetX = initialFabCenterX + dx;
+        const targetY = initialFabCenterY + dy;
+        const clampedX = Math.min(Math.max(28, targetX), window.innerWidth - 28);
+        const clampedY = Math.min(Math.max(28, targetY), window.innerHeight - 28);
+
+        // Vertical anchoring: if in upper region, expand downwards; else expand upwards
+        if (clampedY < 260) {
+          fabContainer.style.top = Math.round(clampedY - 22) + 'px';
+          fabContainer.style.bottom = 'auto';
+          fabContainer.style.flexDirection = 'column-reverse';
+        } else {
+          fabContainer.style.bottom = Math.round(window.innerHeight - (clampedY + 22)) + 'px';
+          fabContainer.style.top = 'auto';
+          fabContainer.style.flexDirection = 'column';
+        }
+
+        // Horizontal anchoring: if in left region, align to start; else align to end
+        if (clampedX < 320) {
+          fabContainer.style.left = Math.round(clampedX - 22) + 'px';
+          fabContainer.style.right = 'auto';
+          fabContainer.style.alignItems = 'flex-start';
+        } else {
+          fabContainer.style.right = Math.round(window.innerWidth - (clampedX + 22)) + 'px';
+          fabContainer.style.left = 'auto';
+          fabContainer.style.alignItems = 'flex-end';
+        }
       }
     });
 
     document.addEventListener('mouseup', () => {
-      isDragging = false;
+      if (isDragging) {
+        isDragging = false;
+        if (hasDragged) {
+          fabMenu.classList.add('visible');
+          setTimeout(() => {
+            hasDragged = false;
+          }, 120);
+        }
+      }
     });
 
     mainFab.addEventListener('click', (e) => {
       if (hasDragged) {
         e.preventDefault();
         e.stopPropagation();
-        hasDragged = false;
         return;
+      }
+      if (!fabMenu.classList.contains('visible')) {
+        fabMenu.classList.add('visible');
       }
       onOneButtonClick();
     });
@@ -1002,12 +1041,23 @@
           if (node.id === 'privacyshield-root' || 
               node.id === 'ps-mr-overlay' || 
               node.id === 'ps-mr-preview-modal' ||
-              (node.hasAttribute && node.hasAttribute('data-ps-ignore')) ||
+              (node.classList && (
+                node.classList.contains('ps-injected') ||
+                node.classList.contains('ps-redacted-badge') ||
+                node.classList.contains('ps-redaction-wrapper') ||
+                node.classList.contains('ps-face-overlay')
+              )) ||
+              (node.hasAttribute && (node.hasAttribute('data-ps-ignore') || node.hasAttribute('data-token'))) ||
               (node.closest && (
                 node.closest('#privacyshield-root') || 
                 node.closest('#ps-mr-overlay') || 
                 node.closest('#ps-mr-preview-modal') || 
                 node.closest('.ps-mr-modal-backdrop') ||
+                node.closest('.ps-injected') ||
+                node.closest('.ps-redacted-badge') ||
+                node.closest('.ps-redaction-wrapper') ||
+                node.closest('.ps-face-overlay') ||
+                node.closest('[data-token]') ||
                 node.closest('[data-ps-ignore="true"]')
               ))) continue;
 
