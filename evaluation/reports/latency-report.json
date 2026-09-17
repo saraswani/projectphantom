@@ -1,172 +1,172 @@
 {
   "benchmark": "end_to_end_latency",
   "sihWeight": "15%",
-  "timestamp": "2026-09-17T06:12:51.684Z",
+  "timestamp": "2026-09-17T06:38:07.146Z",
   "totalTrials": 30,
   "e2eStats": {
     "count": 30,
-    "min": 99.42,
-    "max": 150.71,
-    "mean": 123.27,
-    "median": 123.01,
-    "p95": 149.85,
-    "p99": 150.71,
-    "stdDev": 12.84
+    "min": 99.59,
+    "max": 376.5,
+    "mean": 196.03,
+    "median": 217.19,
+    "p95": 351.99,
+    "p99": 376.5,
+    "stdDev": 78.13
   },
   "localProcessingStats": {
     "count": 30,
-    "min": 29.54,
-    "max": 50.32,
-    "mean": 38.68,
-    "median": 36.45,
-    "p95": 49.61,
-    "p99": 50.32,
-    "stdDev": 6.92
+    "min": 29.94,
+    "max": 292.89,
+    "mean": 111.62,
+    "median": 133.87,
+    "p95": 244.48,
+    "p99": 292.89,
+    "stdDev": 77.83
   },
   "serverAndNetworkStats": {
     "count": 30,
-    "min": 48.3,
-    "max": 82.75,
-    "mean": 63.7,
-    "median": 66.19,
-    "p95": 80.24,
-    "p99": 82.75,
-    "stdDev": 8.92
+    "min": 47.85,
+    "max": 82.67,
+    "mean": 63.77,
+    "median": 66.18,
+    "p95": 76.54,
+    "p99": 82.67,
+    "stdDev": 8.61
   },
   "actionExecutionStats": {
     "count": 30,
-    "min": 14.13,
-    "max": 33.95,
-    "mean": 20.7,
-    "median": 17.24,
-    "p95": 33.28,
-    "p99": 33.95,
-    "stdDev": 6.68
+    "min": 13.2,
+    "max": 33.62,
+    "mean": 20.23,
+    "median": 17.21,
+    "p95": 33.39,
+    "p99": 33.62,
+    "stdDev": 6.39
   },
   "trialsSummary": [
     {
       "trialIndex": 1,
       "taskType": "form_fill",
       "timestamps": {
-        "T0": 408.1508,
-        "T1": 429.8736,
-        "T2": 430.5909,
-        "T3": 430.7918,
-        "T4": 444.894,
-        "T5": 445.9001,
-        "T6": 515.5879,
-        "T7": 540.1221
+        "T0": 5565.5456,
+        "T1": 5591.247,
+        "T2": 5790.5597,
+        "T3": 5790.7568,
+        "T4": 5810.0215,
+        "T5": 5815.792,
+        "T6": 5888.8965,
+        "T7": 5917.5381
       },
       "durations": {
-        "screenCapture": 21.72,
-        "visualPerception": 0.72,
+        "screenCapture": 25.7,
+        "visualPerception": 199.31,
         "piiDetection": 0.2,
-        "localRedaction": 14.1,
-        "localProcessingTotal": 36.74,
-        "networkSend": 1.01,
-        "serverAndNetwork": 69.69,
-        "actionExecution": 24.53,
-        "totalE2E": 131.97
+        "localRedaction": 19.26,
+        "localProcessingTotal": 244.48,
+        "networkSend": 5.77,
+        "serverAndNetwork": 73.1,
+        "actionExecution": 28.64,
+        "totalE2E": 351.99
       }
     },
     {
       "trialIndex": 2,
       "taskType": "form_fill",
       "timestamps": {
-        "T0": 540.4547,
-        "T1": 566.5931,
-        "T2": 566.6108,
-        "T3": 567.8114,
-        "T4": 579.1301,
-        "T5": 579.3569,
-        "T6": 646.316,
-        "T7": 678.0325
+        "T0": 5917.77,
+        "T1": 5932.6525,
+        "T2": 5932.7897,
+        "T3": 5933.1285,
+        "T4": 5948.094,
+        "T5": 5948.3129,
+        "T6": 6010.4141,
+        "T7": 6040.0498
       },
       "durations": {
-        "screenCapture": 26.14,
-        "visualPerception": 0.02,
-        "piiDetection": 1.2,
-        "localRedaction": 11.32,
-        "localProcessingTotal": 38.68,
-        "networkSend": 0.23,
-        "serverAndNetwork": 66.96,
-        "actionExecution": 31.72,
-        "totalE2E": 137.58
+        "screenCapture": 14.88,
+        "visualPerception": 0.14,
+        "piiDetection": 0.34,
+        "localRedaction": 14.97,
+        "localProcessingTotal": 30.32,
+        "networkSend": 0.22,
+        "serverAndNetwork": 62.1,
+        "actionExecution": 29.64,
+        "totalE2E": 122.28
       }
     },
     {
       "trialIndex": 3,
       "taskType": "form_fill",
       "timestamps": {
-        "T0": 678.1149,
-        "T1": 705.5967,
-        "T2": 707.8519,
-        "T3": 708.2322,
-        "T4": 720.8318,
-        "T5": 721.0806,
-        "T6": 782.7779,
-        "T7": 798.3651
+        "T0": 6040.1431,
+        "T1": 6056.1881,
+        "T2": 6206.6253,
+        "T3": 6208.2473,
+        "T4": 6333.0349,
+        "T5": 6333.3709,
+        "T6": 6386.1322,
+        "T7": 6416.6428
       },
       "durations": {
-        "screenCapture": 27.48,
-        "visualPerception": 2.26,
-        "piiDetection": 0.38,
-        "localRedaction": 12.6,
-        "localProcessingTotal": 42.72,
-        "networkSend": 0.25,
-        "serverAndNetwork": 61.7,
-        "actionExecution": 15.59,
-        "totalE2E": 120.25
+        "screenCapture": 16.05,
+        "visualPerception": 150.44,
+        "piiDetection": 1.62,
+        "localRedaction": 124.79,
+        "localProcessingTotal": 292.89,
+        "networkSend": 0.34,
+        "serverAndNetwork": 52.76,
+        "actionExecution": 30.51,
+        "totalE2E": 376.5
       }
     },
     {
       "trialIndex": 4,
       "taskType": "form_fill",
       "timestamps": {
-        "T0": 798.444,
-        "T1": 813.2684,
-        "T2": 813.2858,
-        "T3": 813.4721,
-        "T4": 828.7417,
-        "T5": 829.3579,
-        "T6": 893.1302,
-        "T7": 910.8278
+        "T0": 6416.7149,
+        "T1": 6442.7698,
+        "T2": 6624.5681,
+        "T3": 6624.719,
+        "T4": 6647.2082,
+        "T5": 6647.5866,
+        "T6": 6724.0962,
+        "T7": 6737.2937
       },
       "durations": {
-        "screenCapture": 14.82,
-        "visualPerception": 0.02,
-        "piiDetection": 0.19,
-        "localRedaction": 15.27,
-        "localProcessingTotal": 30.3,
-        "networkSend": 0.62,
-        "serverAndNetwork": 63.77,
-        "actionExecution": 17.7,
-        "totalE2E": 112.38
+        "screenCapture": 26.05,
+        "visualPerception": 181.8,
+        "piiDetection": 0.15,
+        "localRedaction": 22.49,
+        "localProcessingTotal": 230.49,
+        "networkSend": 0.38,
+        "serverAndNetwork": 76.51,
+        "actionExecution": 13.2,
+        "totalE2E": 320.58
       }
     },
     {
       "trialIndex": 5,
       "taskType": "form_fill",
       "timestamps": {
-        "T0": 911.1586,
-        "T1": 925.3677,
-        "T2": 926.2401,
-        "T3": 926.4165,
-        "T4": 940.6968,
-        "T5": 940.9267,
-        "T6": 1009.2676,
-        "T7": 1031.5309
+        "T0": 6737.4223,
+        "T1": 6767.524,
+        "T2": 6767.5447,
+        "T3": 6767.723,
+        "T4": 6784.4589,
+        "T5": 6784.6868,
+        "T6": 6861.2243,
+        "T7": 6875.6775
       },
       "durations": {
-        "screenCapture": 14.21,
-        "visualPerception": 0.87,
+        "screenCapture": 30.1,
+        "visualPerception": 0.02,
         "piiDetection": 0.18,
-        "localRedaction": 14.28,
-        "localProcessingTotal": 29.54,
+        "localRedaction": 16.74,
+        "localProcessingTotal": 47.04,
         "networkSend": 0.23,
-        "serverAndNetwork": 68.34,
-        "actionExecution": 22.26,
-        "totalE2E": 120.37
+        "serverAndNetwork": 76.54,
+        "actionExecution": 14.45,
+        "totalE2E": 138.26
       }
     }
   ]

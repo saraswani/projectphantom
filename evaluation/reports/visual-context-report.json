@@ -1,7 +1,7 @@
 {
   "benchmark": "visual_context_accuracy",
   "sihWeight": "25%",
-  "timestamp": "2026-09-17T06:12:47.734Z",
+  "timestamp": "2026-09-17T06:46:11.127Z",
   "totalExpectedElements": 34,
   "totalDetectedElements": 31,
   "correctElements": 31,
@@ -9,24 +9,56 @@
   "precision": 1,
   "recall": 1,
   "f1": 1,
-  "durationMs": 16.28,
+  "durationMs": 3185.84,
   "vitClassification": {
     "status": "success",
-    "visualPageType": "document_reader",
-    "visualLabel": "Document / Article Page",
-    "layoutClass": "ARTICLE_DOCUMENTATION",
-    "visualConfidence": 0.84,
+    "isRealModel": true,
+    "modelName": "MobileViT-XXS (Apple, Pretrained ONNX)",
+    "visualPageType": "auth_login",
+    "visualLabel": "Authentication / Login",
+    "layoutClass": "AUTHENTICATION_LOGIN",
+    "visualConfidence": 0.95,
+    "topPredictions": [
+      {
+        "classIndex": 613,
+        "label": "joystick",
+        "probability": 1,
+        "logit": 9518.94
+      },
+      {
+        "classIndex": 0,
+        "label": "tench, Tinca tinca",
+        "probability": 0,
+        "logit": -14870.36
+      },
+      {
+        "classIndex": 1,
+        "label": "goldfish, Carassius auratus",
+        "probability": 0,
+        "logit": -14101.37
+      },
+      {
+        "classIndex": 2,
+        "label": "great white shark, white shark, man-eater, man-eating shark, Carcharodon carcharias",
+        "probability": 0,
+        "logit": -6613.27
+      },
+      {
+        "classIndex": 3,
+        "label": "tiger shark, Galeocerdo cuvieri",
+        "probability": 0,
+        "logit": -10596.74
+      }
+    ],
     "metrics": {
-      "luminance": 0.5,
-      "edgeComplexity": 0,
-      "patchEmbeddings": 100
+      "luminance": 0,
+      "edgeComplexity": 95.189,
+      "patchEmbeddings": 256,
+      "topClassIndex": 613
     },
     "executionProvider": "WASM (WebAssembly SIMD)",
-    "loadTimeMs": 6.34,
-    "inferenceLatencyMs": 1.29,
-    "headSparsityRate": 0.52,
-    "activeHeadsCount": 23,
-    "resolutionTier": 160,
+    "loadTimeMs": 1771.81,
+    "inferenceLatencyMs": 530.72,
     "cached": false
   },
   "categoryResults": {

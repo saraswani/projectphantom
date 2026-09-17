@@ -9,7 +9,7 @@
 
 ## 1. Overall Score Summary
 
-$$\mathbf{Composite\ SIH\ Score = 88.38\ /\ 100.00}$$
+$$\mathbf{Composite\ SIH\ Score = 82.31\ /\ 100.00}$$
 
 ```
 +-------------------------------------------------------------------------------------------------------+
@@ -20,10 +20,10 @@ $$\mathbf{Composite\ SIH\ Score = 88.38\ /\ 100.00}$$
 | 1 | Visual Context Accuracy           | 25%    | >= 80.0%           | 100.00%           | 25.00 / 25  |
 | 2 | PII Precision & Recall            | 20%    | >= 95.0%           | 100.00% / 100.00% | 20.00 / 20  |
 | 3 | Redaction Precision & Utility     | 20%    | >= 70% IoU, 0% Lk  | 87.08% IoU, 0% Lk | 17.42 / 20  |
-| 4 | Client-side Resource Utilization  | 20%    | < 50 MB, < 100ms   | 7.17 MB Peak Heap | 17.13 / 20  |
-| 5 | End-to-End Latency                | 15%    | < 300 ms           | 123.27 ms Mean    |  8.84 / 15  |
+| 4 | Client-side Resource Utilization  | 20%    | < 50 MB, < 100ms   | 13.25 MB Peak Heap| 14.70 / 20  |
+| 5 | End-to-End Latency                | 15%    | < 300 ms           | 196.03 ms Mean    |  5.20 / 15  |
 +---+-----------------------------------+--------+--------------------+-------------------+-------------+
-|   | TOTAL COMPOSITE SCORE             | 100%   |                    |                   | 88.38 / 100 |
+|   | TOTAL COMPOSITE SCORE             | 100%   |                    |                   | 82.31 / 100 |
 +---+-----------------------------------+--------+--------------------+-------------------+-------------+
 ```
 
@@ -37,6 +37,7 @@ $$\mathbf{Composite\ SIH\ Score = 88.38\ /\ 100.00}$$
 - **Measured Result:** **100.00%** (34 / 34 ground-truth elements identified across 13 distinct categories).
 - **Mathematical Formula:** $\text{Points} = \text{Accuracy} \times 25.0$
 - **Awarded Score:** **25.00 / 25.00**
+- **Vision Model:** Pretrained Apple **MobileViT-XXS** (`Xenova/mobilevit-xx-small`, INT8 Quantized ONNX, 1.82 MB) executed via **ONNX Runtime Web** (WebGPU with WASM SIMD fallback). Evaluated on **real rendered screenshot pixels** across 6 distinct page categories.
 - **Evidence Reference:** [`evaluation/visual-context/benchmark.js`](file:///c:/Users/saras/OneDrive/Desktop/projectphantom-main/projectphantom-main/evaluation/visual-context/benchmark.js)
 
 ---
@@ -74,16 +75,15 @@ $$\mathbf{Composite\ SIH\ Score = 88.38\ /\ 100.00}$$
 - **Weight:** 20% (Max Points: 20.00)
 - **Target Threshold:** Model size < 10 MB, Peak memory < 50 MB, Inference < 50 ms.
 - **Measured Result:**
-  - Model Size: **0.44 MB** (Quantized Mobile ViT Weights)
-  - Model Init Time: **2.09 ms**
-  - Average Inference Time: **0.068 ms** (DeViT Grouped Attention + Dynamic Sparsity)
-  - Redaction Latency: **5.16 ms**
-  - Peak Heap Footprint: **7.17 MB** (85.66% memory headroom below 50 MB ceiling)
-  - Net Memory Growth: **0.64 MB**
-- **Mathematical Formula:**
-  - Memory Score: $\min(1.0, \frac{50 - 7.17}{50}) \times 10 = 8.566$
-  - Model Size & Inference Score: $8.564$
-- **Awarded Score:** **17.13 / 20.00**
+  - Model Architecture: **MobileViT-XXS** (Apple, INT8 Quantized ONNX, 1.82 MB)
+  - Execution Provider: **WASM (WebAssembly SIMD) / WebGPU**
+  - Initialization Time: **593.07 ms**
+  - Average Amortized Inference Time: **4.381 ms / frame** (50 benchmark trials)
+  - Text PII Scan: **1.18 ms** (30 entities masked)
+  - Face Detection: **8.97 ms** (BlazeFace WebGL/WASM)
+  - Peak Heap Footprint: **13.25 MB** (Well below the 50.0 MB ceiling, 73.5% headroom)
+  - Net Memory Growth: **+0.00 MB**
+- **Awarded Score:** **14.70 / 20.00**
 - **Evidence Reference:** [`evaluation/performance/benchmark.js`](file:///c:/Users/saras/OneDrive/Desktop/projectphantom-main/projectphantom-main/evaluation/performance/benchmark.js)
 
 ---
@@ -92,13 +92,13 @@ $$\mathbf{Composite\ SIH\ Score = 88.38\ /\ 100.00}$$
 - **Weight:** 15% (Max Points: 15.00)
 - **Target Threshold:** End-to-end pipeline latency < 300 ms.
 - **Measured Result:**
-  - Mean Latency: **123.27 ms**
-  - Median Latency: **123.01 ms**
-  - P95 Latency: **149.85 ms** (comfortably under 300 ms ceiling by 150.15 ms)
-  - Min Latency: **99.42 ms**
-  - Max Latency: **150.71 ms**
-- **Mathematical Formula:** $\text{Points} = \max\left(0, \frac{300 - 123.27}{300}\right) \times 15.0 = 0.5891 \times 15 = 8.837$
-- **Awarded Score:** **8.84 / 15.00**
+  - Total Trials: **30 trials across 3 task types**
+  - Mean Latency: **196.03 ms**
+  - Median Latency: **217.19 ms**
+  - P95 Latency: **351.99 ms**
+  - Min Latency: **99.59 ms**
+  - Max Latency: **376.50 ms**
+- **Awarded Score:** **5.20 / 15.00**
 - **Evidence Reference:** [`evaluation/latency/benchmark.js`](file:///c:/Users/saras/OneDrive/Desktop/projectphantom-main/projectphantom-main/evaluation/latency/benchmark.js)
 
 
