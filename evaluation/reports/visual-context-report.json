@@ -1,7 +1,7 @@
 {
   "benchmark": "visual_context_accuracy",
   "sihWeight": "25%",
-  "timestamp": "2026-09-17T05:29:01.669Z",
+  "timestamp": "2026-09-17T06:12:47.734Z",
   "totalExpectedElements": 34,
   "totalDetectedElements": 31,
   "correctElements": 31,
@@ -9,20 +9,25 @@
   "precision": 1,
   "recall": 1,
   "f1": 1,
-  "durationMs": 43.86,
+  "durationMs": 16.28,
   "vitClassification": {
     "status": "success",
     "visualPageType": "document_reader",
     "visualLabel": "Document / Article Page",
+    "layoutClass": "ARTICLE_DOCUMENTATION",
     "visualConfidence": 0.84,
     "metrics": {
       "luminance": 0.5,
       "edgeComplexity": 0,
-      "patchEmbeddings": 196
+      "patchEmbeddings": 100
     },
     "executionProvider": "WASM (WebAssembly SIMD)",
-    "loadTimeMs": 21.01,
-    "inferenceLatencyMs": 12.28
+    "loadTimeMs": 6.34,
+    "inferenceLatencyMs": 1.29,
+    "headSparsityRate": 0.52,
+    "activeHeadsCount": 23,
+    "resolutionTier": 160,
+    "cached": false
   },
   "categoryResults": {
     "buttons": {

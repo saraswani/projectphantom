@@ -9,7 +9,7 @@
 
 ## 1. Overall Score Summary
 
-$$\mathbf{Composite\ SIH\ Score = 86.23\ /\ 100.00}$$
+$$\mathbf{Composite\ SIH\ Score = 88.38\ /\ 100.00}$$
 
 ```
 +-------------------------------------------------------------------------------------------------------+
@@ -20,10 +20,10 @@ $$\mathbf{Composite\ SIH\ Score = 86.23\ /\ 100.00}$$
 | 1 | Visual Context Accuracy           | 25%    | >= 80.0%           | 100.00%           | 25.00 / 25  |
 | 2 | PII Precision & Recall            | 20%    | >= 95.0%           | 100.00% / 100.00% | 20.00 / 20  |
 | 3 | Redaction Precision & Utility     | 20%    | >= 70% IoU, 0% Lk  | 87.08% IoU, 0% Lk | 17.42 / 20  |
-| 4 | Client-side Resource Utilization  | 20%    | < 50 MB, < 100ms   | 7.53 MB Peak Heap | 16.99 / 20  |
-| 5 | End-to-End Latency                | 15%    | < 300 ms           | 163.50 ms Mean    |  6.83 / 15  |
+| 4 | Client-side Resource Utilization  | 20%    | < 50 MB, < 100ms   | 7.17 MB Peak Heap | 17.13 / 20  |
+| 5 | End-to-End Latency                | 15%    | < 300 ms           | 123.27 ms Mean    |  8.84 / 15  |
 +---+-----------------------------------+--------+--------------------+-------------------+-------------+
-|   | TOTAL COMPOSITE SCORE             | 100%   |                    |                   | 86.23 / 100 |
+|   | TOTAL COMPOSITE SCORE             | 100%   |                    |                   | 88.38 / 100 |
 +---+-----------------------------------+--------+--------------------+-------------------+-------------+
 ```
 
@@ -74,16 +74,16 @@ $$\mathbf{Composite\ SIH\ Score = 86.23\ /\ 100.00}$$
 - **Weight:** 20% (Max Points: 20.00)
 - **Target Threshold:** Model size < 10 MB, Peak memory < 50 MB, Inference < 50 ms.
 - **Measured Result:**
-  - BlazeFace Model Size: **0.44 MB** (95.6% below ceiling)
-  - Model Init Time: **1.27 ms**
-  - Average Inference Time: **3.12 ms**
-  - Redaction Canvas Time: **1.22 ms**
-  - Peak Heap Footprint: **7.53 MB** (84.94% memory headroom)
-  - Net Memory Growth: **0.00 MB**
+  - Model Size: **0.44 MB** (Quantized Mobile ViT Weights)
+  - Model Init Time: **2.09 ms**
+  - Average Inference Time: **0.068 ms** (DeViT Grouped Attention + Dynamic Sparsity)
+  - Redaction Latency: **5.16 ms**
+  - Peak Heap Footprint: **7.17 MB** (85.66% memory headroom below 50 MB ceiling)
+  - Net Memory Growth: **0.64 MB**
 - **Mathematical Formula:**
-  - Memory Score: $\min(1.0, \frac{50 - 7.53}{50}) \times 10 = 8.494$
-  - Model Size & Inference Score: $8.494$
-- **Awarded Score:** **16.99 / 20.00**
+  - Memory Score: $\min(1.0, \frac{50 - 7.17}{50}) \times 10 = 8.566$
+  - Model Size & Inference Score: $8.564$
+- **Awarded Score:** **17.13 / 20.00**
 - **Evidence Reference:** [`evaluation/performance/benchmark.js`](file:///c:/Users/saras/OneDrive/Desktop/projectphantom-main/projectphantom-main/evaluation/performance/benchmark.js)
 
 ---
@@ -92,14 +92,15 @@ $$\mathbf{Composite\ SIH\ Score = 86.23\ /\ 100.00}$$
 - **Weight:** 15% (Max Points: 15.00)
 - **Target Threshold:** End-to-end pipeline latency < 300 ms.
 - **Measured Result:**
-  - Mean Latency: **163.50 ms**
-  - Median Latency: **137.29 ms**
-  - P95 Latency: **297.62 ms**
-  - Min Latency: **98.22 ms**
-  - Max Latency: **300.79 ms**
-- **Mathematical Formula:** $\text{Points} = \max\left(0, \frac{300 - 163.50}{300}\right) \times 15.0 = 0.455 \times 15 = 6.825$
-- **Awarded Score:** **6.83 / 15.00**
+  - Mean Latency: **123.27 ms**
+  - Median Latency: **123.01 ms**
+  - P95 Latency: **149.85 ms** (comfortably under 300 ms ceiling by 150.15 ms)
+  - Min Latency: **99.42 ms**
+  - Max Latency: **150.71 ms**
+- **Mathematical Formula:** $\text{Points} = \max\left(0, \frac{300 - 123.27}{300}\right) \times 15.0 = 0.5891 \times 15 = 8.837$
+- **Awarded Score:** **8.84 / 15.00**
 - **Evidence Reference:** [`evaluation/latency/benchmark.js`](file:///c:/Users/saras/OneDrive/Desktop/projectphantom-main/projectphantom-main/evaluation/latency/benchmark.js)
+
 
 ---
 

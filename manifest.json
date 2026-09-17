@@ -74,7 +74,9 @@
         "lib/vision/vision-worker.js",
         "lib/vision/tesseract/*",
         "lib/vision/model/*",
+        "lib/vision/models/*",
         "icons/*",
+
         "styles/*"
       ],
       "matches": [
