@@ -25,7 +25,6 @@
   const faceDetector = window.faceDetector;
   const screenAnalyzer = window.screenAnalyzer;
   const screenViT = window.screenViT;
-  const visionAdapter = window.visionAdapter;
   const ocrWorker = window.ocrWorker;
   const canvasRedactor = window.canvasRedactor;
   const decisionEngine = window.decisionEngine;
@@ -536,13 +535,6 @@
         pageType: vitResult?.visualPageType,
         provider: vitResult?.executionProvider
       });
-
-      // 4c. Local Neural UI Perception (YOLOv8-UI Object Detection on Screenshot Pixels)
-      const adapter = (typeof visionAdapter !== 'undefined' ? visionAdapter : null) ||
-                      (typeof window !== 'undefined' ? window.visionAdapter : null);
-      if (adapter && sanitizedImageBase64) {
-        await adapter.processScreenshot(sanitizedImageBase64, pipelineState);
-      }
 
       // 5. Local Decision-Making Engine (Component 4)
       instrumentation.startStage('local_decision_engine');

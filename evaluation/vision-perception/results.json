@@ -1,6 +1,6 @@
 {
   "benchmarkTitle": "Phantom AI Local Neural Vision Perception Benchmark",
-  "timestamp": "2026-09-17T14:24:26.261Z",
+  "timestamp": "2026-09-17T15:05:10.040Z",
   "modelInfo": {
     "modelId": "YOLOv8-UI-Detector (Pretrained ONNX)",
     "architecture": "YOLOv8-Nano UI Object Detector",
@@ -8,13 +8,13 @@
     "weightsFormat": "ONNX FP32 (lib/vision/models/ui-detector.onnx)",
     "executionProvider": "WASM (WebAssembly SIMD)",
     "inputResolution": "640x640",
-    "loadTimeMs": 2352.7
+    "loadTimeMs": 1994.1
   },
   "performanceTiming": {
-    "firstInferenceMs": 1654.02,
-    "warmInferenceMs": 1654.02,
-    "averageInferenceMs": 1654.02,
-    "p95InferenceMs": 1654.02,
+    "firstInferenceMs": 1184.25,
+    "warmInferenceMs": 1184.25,
+    "averageInferenceMs": 1184.25,
+    "p95InferenceMs": 1184.25,
     "totalInferences": 1
   },
   "detectionQuality": {
@@ -42,7 +42,7 @@
       "recall": 0.05555555555555555,
       "f1": 0.046511627906976744,
       "meanIoU": 0.25813623857035656,
-      "latencyMs": 1654.02
+      "latencyMs": 1184.25
     }
   ]
 }
