@@ -29,6 +29,7 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "onnxruntime-web": "^1.30.0",
+    "pngjs": "^7.0.0",
     "tesseract.js": "^7.0.0"
   },
   "devDependencies": {

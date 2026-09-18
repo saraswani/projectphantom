@@ -44,7 +44,6 @@
         "lib/vision/tf.min.js",
         "lib/vision/blazeface.min.js",
         "lib/vision/face-detector.js",
-        "lib/vision/tesseract/tesseract.min.js",
         "lib/vision/ocr-worker.js",
         "lib/vision/screen-analyzer.js",
         "lib/vision/ort/ort.all.min.js",
@@ -73,6 +72,7 @@
       "resources": [
         "lib/pii/ner-worker.js",
         "lib/vision/vision-worker.js",
+        "lib/vision/ocr-worker.js",
         "lib/vision/tesseract/*",
         "lib/vision/ort/*",
         "lib/vision/model/*",

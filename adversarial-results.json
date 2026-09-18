@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-09-16T19:48:45.779Z",
+  "timestamp": "2026-09-18T09:55:19.855Z",
   "evaluationType": "Adversarial Edge-Case Stress Test",
   "datasetSize": 13,
   "metrics": {
@@ -10,7 +10,7 @@
     "precision": 100,
     "recall": 55.56,
     "f1Score": 71.43,
-    "latencyMs": 9.84
+    "latencyMs": 32.03
   },
   "comparisonWithClean": {
     "cleanF1": 100,

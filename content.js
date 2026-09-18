@@ -528,7 +528,7 @@
           updateProgress(35, 'Scanning Document Images for Sensitive PII...', 'badge-ocr');
           const pageOcrRes = await Promise.race([
             ocrWorker.scanPageImages(),
-            new Promise(res => setTimeout(() => res({ domOcrBoxes: [], screenshotOcrBoxes: [] }), 8000))
+            new Promise(res => setTimeout(() => res({ domOcrBoxes: [], screenshotOcrBoxes: [] }), 25000))
           ]);
           if (pageOcrRes && pageOcrRes.domOcrBoxes && pageOcrRes.domOcrBoxes.length > 0) {
             pageOcrBoxes = pageOcrRes.domOcrBoxes;
@@ -567,6 +567,39 @@
       let ocrBoxes = [...screenshotOcrBoxes];
 
       if (captureResponse && captureResponse.success && captureResponse.dataUrl) {
+        // --- Verify coordinate scaling against actual screenshot dimensions ---
+        if (screenshotOcrBoxes.length > 0) {
+          try {
+            const tempImg = new Image();
+            tempImg.src = captureResponse.dataUrl;
+            await new Promise((res) => {
+              if (tempImg.complete) return res();
+              tempImg.onload = res;
+              tempImg.onerror = res;
+            });
+            const actualW = tempImg.naturalWidth || window.innerWidth;
+            const actualH = tempImg.naturalHeight || window.innerHeight;
+            const actualScaleX = actualW / (window.innerWidth || actualW);
+            const actualScaleY = actualH / (window.innerHeight || actualH);
+
+            // Re-scale boxes accurately against actual screenshot dimensions
+            ocrBoxes = screenshotOcrBoxes.map(b => {
+              if (b.viewportBox) {
+                return {
+                  ...b,
+                  x: Math.round(b.viewportBox.x * actualScaleX),
+                  y: Math.round(b.viewportBox.y * actualScaleY),
+                  width: Math.round(b.viewportBox.width * actualScaleX),
+                  height: Math.round(b.viewportBox.height * actualScaleY)
+                };
+              }
+              return b;
+            });
+          } catch (scaleErr) {
+            console.warn('[Phantom AI] Error adjusting screenshot coordinate scaling:', scaleErr);
+          }
+        }
+
         // --- 4a. OCR Text Recognition on Screenshot (if no page image OCR detected) ---
         if (ocrBoxes.length === 0 && typeof ocrWorker !== 'undefined' && ocrWorker && typeof ocrWorker.detectSensitiveBoxes === 'function') {
           updateProgress(70, 'Running Local OCR on Screenshot...', 'badge-ocr');
@@ -574,7 +607,7 @@
           try {
             const ocrRes = await Promise.race([
               ocrWorker.detectSensitiveBoxes(captureResponse.dataUrl),
-              new Promise(res => setTimeout(() => res({ ocrBoxes: [] }), 8000))
+              new Promise(res => setTimeout(() => res({ ocrBoxes: [] }), 25000))
             ]);
             if (ocrRes && ocrRes.ocrBoxes && ocrRes.ocrBoxes.length > 0) {
               ocrBoxes = ocrRes.ocrBoxes;
@@ -585,6 +618,8 @@
           }
           instrumentation.endStage('ocr_text_extraction', { ocrRedactionCount });
         }
+
+        console.log('[Phantom AI] FINAL screenshotOcrBoxes:', ocrBoxes);
 
         // --- 4b. Canvas Pixel Redaction ---
         const redactCanvasResult = await canvasRedactor.redactScreenshot(
