@@ -865,11 +865,9 @@
     instrumentation.startStage('server_agent_roundtrip');
 
     try {
-      // 1. Ensure screenStructure is populated so we have the element map
-      if (!pipelineState.screenStructure || !pipelineState.screenStructure.elements || pipelineState.screenStructure.elements.length === 0) {
-        if (typeof screenAnalyzer !== 'undefined' && typeof screenAnalyzer.analyzeScreen === 'function') {
-          pipelineState.screenStructure = screenAnalyzer.analyzeScreen();
-        }
+      // 1. Always analyze latest screenStructure so we have real-time form inputs and selectors
+      if (typeof screenAnalyzer !== 'undefined' && typeof screenAnalyzer.analyzeScreen === 'function') {
+        pipelineState.screenStructure = screenAnalyzer.analyzeScreen();
       }
 
       // 2. Evaluate Decision for Task
@@ -980,8 +978,10 @@
         const execResults = await actionExecutor.executeActions(safeActions);
         instrumentation.endStage('action_execution_dom', { resultsCount: execResults.length });
 
+        const filledCount = execResults.filter(r => r.success && (r.action === 'fill' || r.action === 'type')).length;
+        const skippedCount = execResults.filter(r => r.action === 'fill_skipped').length;
         resultContent.innerHTML += `
-          <div style="margin-top:8px;color:#34d399;font-weight:600;">✔ Details filled successfully! Please review and click Submit manually.</div>
+          <div style="margin-top:8px;color:#34d399;font-weight:600;">✔ ${filledCount} field${filledCount === 1 ? '' : 's'} filled accurately!${skippedCount > 0 ? ` (${skippedCount} optional skipped)` : ''} Please review and click Submit manually.</div>
         `;
       } else {
         // Plain conversational answer / summary

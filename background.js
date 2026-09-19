@@ -9,9 +9,9 @@
  * - External AI API keys are never stored, logged, or received here.
  */
 
-// Import config and privacy gate
+// Import config, privacy gate, and form classifier
 try {
-  importScripts('config.js', 'lib/pii/verhoeff.js', 'lib/pii/luhn.js', 'lib/pii/regex-rules.js', 'lib/pii/text-detector.js', 'lib/privacy/privacy-gate.js');
+  importScripts('config.js', 'lib/pii/verhoeff.js', 'lib/pii/luhn.js', 'lib/pii/regex-rules.js', 'lib/pii/text-detector.js', 'lib/privacy/privacy-gate.js', 'lib/executor/form-classifier.js');
 } catch (e) {
   console.warn('[PrivacyShield Background] importScripts notice:', e);
 }
@@ -24,31 +24,55 @@ const DEFAULT_PROXY_URL = (typeof PrivacyShieldConfig !== 'undefined') ? Privacy
 function synthesizeLocalActions(screenStructure, task, pageClassification) {
   const lowerTask = (task || '').toLowerCase();
   const elements = screenStructure?.elements || [];
+  const classifier = (typeof FormFieldClassifier !== 'undefined' ? FormFieldClassifier : (typeof formClassifier !== 'undefined' ? formClassifier : null));
 
-  if (lowerTask.includes('fill') || lowerTask.includes('form') || lowerTask.includes('complete') || lowerTask.includes('auto') || lowerTask.includes('input')) {
-    const inputs = elements.filter(e => (e.type && e.type.startsWith('input')) || e.type === 'select_dropdown' || e.type === 'textarea');
+  const isFormFill = classifier?.isFormFillIntent ? classifier.isFormFillIntent(task) : /(?:fill|auto[- ]?fill|populate|complete|enter|type|input|apply|register|sign[- ]?up|profile|details|form)/i.test(lowerTask);
+
+  if (isFormFill) {
+    const inputs = elements.filter(e => {
+      const t = (e.type || '').toLowerCase();
+      return (t.startsWith('input') || t === 'select_dropdown' || t === 'textarea') &&
+             t !== 'input_password' && t !== 'input_submit' && t !== 'input_button';
+    });
     const actions = [];
 
     inputs.forEach(inp => {
-      let fieldType = 'name';
-      const label = (inp.label || inp.selector || inp.id || '').toLowerCase();
-      if (label.includes('email')) fieldType = 'email';
-      else if (label.includes('phone') || label.includes('mobile') || label.includes('contact') || label.includes('tel')) fieldType = 'phone';
-      else if (label.includes('aadhaar') || label.includes('uid') || label.includes('aadhar')) fieldType = 'aadhaar';
-      else if (label.includes('pan')) fieldType = 'pan';
-      else if (label.includes('addr') || label.includes('street') || label.includes('residence') || label.includes('flat')) fieldType = 'address';
-      else if (label.includes('city')) fieldType = 'city';
-      else if (label.includes('state')) fieldType = 'state';
-      else if (label.includes('pin') || label.includes('zip')) fieldType = 'pincode';
+      // Use existing classification from screenAnalyzer or run classifier
+      let fieldType = inp.semanticFieldType || (classifier ? classifier.classify(inp) : null);
 
-      actions.push({
-        action: 'fill',
-        type: 'fill',
-        selector: inp.selector || `input[name="${inp.label}"]`,
-        target: { type: 'selector', value: inp.selector || `input[name="${inp.label}"]` },
-        fieldType: fieldType,
-        confidence: 0.95
-      });
+      if (!fieldType) {
+        // Safe secondary heuristics
+        const label = `${inp.label || ''} ${inp.selector || ''} ${inp.id || ''}`.toLowerCase();
+        if (label.includes('email')) fieldType = 'email';
+        else if (label.includes('phone') || label.includes('mobile') || label.includes('contact') || label.includes('tel')) fieldType = 'phone';
+        else if (label.includes('aadhaar') || label.includes('uid') || label.includes('aadhar')) fieldType = 'aadhaar';
+        else if (label.includes('pan')) fieldType = 'pan';
+        else if (label.includes('passport')) fieldType = 'passport';
+        else if (label.includes('first')) fieldType = 'first_name';
+        else if (label.includes('last') || label.includes('surname')) fieldType = 'last_name';
+        else if (label.includes('name') && !label.includes('user') && !label.includes('company')) fieldType = 'name';
+        else if (label.includes('addr') || label.includes('street') || label.includes('residence') || label.includes('flat')) fieldType = 'address';
+        else if (label.includes('city')) fieldType = 'city';
+        else if (label.includes('state')) fieldType = 'state';
+        else if (label.includes('pin') || label.includes('zip') || label.includes('postal')) fieldType = 'pincode';
+        else if (label.includes('country') || label.includes('nationality')) fieldType = 'country';
+        else if (label.includes('gender') || label.includes('sex')) fieldType = 'gender';
+        else if (label.includes('dob') || label.includes('birth')) fieldType = 'dob';
+        else if (label.includes('company') || label.includes('org') || label.includes('employer')) fieldType = 'company';
+        else if (label.includes('occupation') || label.includes('designation') || label.includes('job') || label.includes('role')) fieldType = 'occupation';
+      }
+
+      // ONLY generate fill action if fieldType was definitively identified
+      if (fieldType) {
+        actions.push({
+          action: 'fill',
+          type: 'fill',
+          selector: inp.selector || `input[name="${inp.label}"]`,
+          target: { type: 'selector', value: inp.selector || `input[name="${inp.label}"]` },
+          fieldType: fieldType,
+          confidence: inp.confidence || 0.95
+        });
+      }
     });
 
     // NOTE: In accordance with PrivacyShield safety policy, we NEVER automatically click submit buttons.

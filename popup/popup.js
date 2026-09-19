@@ -48,9 +48,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let currentAnalysisData = null;
 
-  // Straight Bar Geometry Constants
-  // Bar width = 290 (from x1=5 to x2=295)
-  const ARC_LENGTH = 290;
+  // Arc Gauge Geometry Constants
+  // Arc radius = 75, angle = 180 degrees (PI radians) -> arcLength = 75 * Math.PI = ~235.619
+  const ARC_LENGTH = 235.62;
 
   // 5-Point Color Ramp Specification
   const COLOR_RAMP = [

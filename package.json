@@ -4,7 +4,8 @@
   "description": "PrivacyShield: A Privacy-Preserving Vision Agent for Chrome and Firefox (Manifest V3)",
   "scripts": {
     "generate-icons": "node generate-icons.js",
-    "test": "node test/evaluate.js",
+    "test": "node test/evaluate.js && node test/test-form-filling.js",
+    "test:form": "node test/test-form-filling.js",
     "test:privacy": "node evaluation/privacy/network-leak-test.js",
     "test:security": "node evaluation/security/security-suite.js",
     "benchmark": "node evaluation/run-all.js",

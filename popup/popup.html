@@ -115,26 +115,33 @@
         </div>
       </section>
 
-      <!-- Simple Risk Score Section -->
-      <section class="simple-score-section" aria-label="Risk score gauge">
-        <div class="simple-score-header">
-          <div class="score-text-wrapper">
-            <span class="score-category-label">THREAT RISK</span>
-            <div class="score-row-small">
-              <span id="gauge-score-value" class="score-numeral-small">--</span>
-              <span class="score-scale-small">/100</span>
+      <!-- Hero Risk Gauge Card -->
+      <section class="gauge-card" aria-label="Risk score gauge">
+        <div class="gauge-wrapper">
+          <svg class="gauge-svg" viewBox="0 0 200 130" role="img" id="gauge-svg-element" aria-label="Security risk gauge">
+            <!-- Background Arc Track -->
+            <path class="gauge-track" d="M 25 115 A 75 75 0 0 1 175 115" fill="none" stroke-width="12" stroke-linecap="round"/>
+            <!-- Animated Value Arc -->
+            <path id="gauge-fill-arc" class="gauge-fill" d="M 25 115 A 75 75 0 0 1 175 115" fill="none" stroke-width="12" stroke-linecap="round"/>
+          </svg>
+
+          <!-- Gauge Center Text Readout -->
+          <div class="gauge-readout">
+            <div class="score-row">
+              <span id="gauge-score-value" class="score-numeral">--</span>
+              <span class="score-scale">/100</span>
             </div>
+            <div class="score-category-label">PHISHING &amp; THREAT RISK</div>
           </div>
+        </div>
+
+        <!-- Plain-Language Verdict Line -->
+        <div class="verdict-container">
           <div id="verdict-badge" class="verdict-pill verdict-safe">
             <span id="verdict-icon" class="verdict-icon" aria-hidden="true">✔</span>
             <span id="verdict-text" class="verdict-text">Analyzing...</span>
           </div>
         </div>
-
-        <svg class="gauge-svg-small" viewBox="0 0 300 10" role="img" id="gauge-svg-element" aria-label="Security risk gauge">
-          <line class="gauge-track" x1="5" y1="5" x2="295" y2="5" fill="none" stroke-width="8" stroke-linecap="round"/>
-          <line id="gauge-fill-arc" class="gauge-fill-small" x1="5" y1="5" x2="295" y2="5" fill="none" stroke-width="8" stroke-linecap="round"/>
-        </svg>
       </section>
 
       <!-- Detail On Demand: Expandable Contributing Risk Signals -->

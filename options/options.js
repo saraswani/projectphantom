@@ -15,6 +15,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   const aadhaarInput = document.getElementById('profile-aadhaar');
   const panInput = document.getElementById('profile-pan');
   const cityInput = document.getElementById('profile-city');
+  const stateInput = document.getElementById('profile-state');
+  const pincodeInput = document.getElementById('profile-pincode');
+  const countryInput = document.getElementById('profile-country');
+  const genderInput = document.getElementById('profile-gender');
+  const dobInput = document.getElementById('profile-dob');
+  const occupationInput = document.getElementById('profile-occupation');
+  const companyInput = document.getElementById('profile-company');
   const addressInput = document.getElementById('profile-address');
 
   // Load Saved Settings from storage
@@ -29,13 +36,20 @@ document.addEventListener('DOMContentLoaded', async () => {
     const p = data.mockProfile || defaultProfile;
 
     if (p) {
-      if (p.name !== undefined) nameInput.value = p.name;
-      if (p.email !== undefined) emailInput.value = p.email;
-      if (p.phone !== undefined) phoneInput.value = p.phone;
-      if (p.aadhaar !== undefined) aadhaarInput.value = p.aadhaar;
-      if (p.pan !== undefined) panInput.value = p.pan;
-      if (p.city !== undefined) cityInput.value = p.city;
-      if (p.address !== undefined) addressInput.value = p.address;
+      if (p.name !== undefined && nameInput) nameInput.value = p.name;
+      if (p.email !== undefined && emailInput) emailInput.value = p.email;
+      if (p.phone !== undefined && phoneInput) phoneInput.value = p.phone;
+      if (p.aadhaar !== undefined && aadhaarInput) aadhaarInput.value = p.aadhaar;
+      if (p.pan !== undefined && panInput) panInput.value = p.pan;
+      if (p.city !== undefined && cityInput) cityInput.value = p.city;
+      if (p.state !== undefined && stateInput) stateInput.value = p.state;
+      if (p.pincode !== undefined && pincodeInput) pincodeInput.value = p.pincode;
+      if (p.country !== undefined && countryInput) countryInput.value = p.country;
+      if (p.gender !== undefined && genderInput) genderInput.value = p.gender;
+      if (p.dob !== undefined && dobInput) dobInput.value = p.dob;
+      if (p.occupation !== undefined && occupationInput) occupationInput.value = p.occupation;
+      if (p.company !== undefined && companyInput) companyInput.value = p.company;
+      if (p.address !== undefined && addressInput) addressInput.value = p.address;
     }
   });
 
@@ -68,16 +82,25 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Save Settings
   saveBtn.addEventListener('click', () => {
     const proxyUrl = proxyInput.value.trim() || 'http://localhost:3001/api/agent';
+    const rawName = (nameInput?.value || '').trim();
+    const nameParts = rawName.split(/\s+/);
     const mockProfile = {
-      name: nameInput.value.trim(),
-      first_name: nameInput.value.trim().split(' ')[0] || '',
-      last_name: nameInput.value.trim().split(' ').slice(1).join(' ') || '',
-      email: emailInput.value.trim(),
-      phone: phoneInput.value.trim(),
-      aadhaar: aadhaarInput.value.trim(),
-      pan: panInput.value.trim(),
-      city: cityInput.value.trim(),
-      address: addressInput.value.trim()
+      name: rawName,
+      first_name: nameParts[0] || '',
+      last_name: nameParts.slice(1).join(' ') || '',
+      email: (emailInput?.value || '').trim(),
+      phone: (phoneInput?.value || '').trim(),
+      aadhaar: (aadhaarInput?.value || '').trim(),
+      pan: (panInput?.value || '').trim(),
+      city: (cityInput?.value || '').trim(),
+      state: (stateInput?.value || '').trim(),
+      pincode: (pincodeInput?.value || '').trim(),
+      country: (countryInput?.value || '').trim(),
+      gender: (genderInput?.value || '').trim(),
+      dob: (dobInput?.value || '').trim(),
+      occupation: (occupationInput?.value || '').trim(),
+      company: (companyInput?.value || '').trim(),
+      address: (addressInput?.value || '').trim()
     };
 
     chrome.storage.local.set({ proxyUrl, mockProfile }, () => {

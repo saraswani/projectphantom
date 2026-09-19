@@ -45,6 +45,7 @@
         "lib/vision/blazeface.min.js",
         "lib/vision/face-detector.js",
         "lib/vision/ocr-worker.js",
+        "lib/executor/form-classifier.js",
         "lib/vision/screen-analyzer.js",
         "lib/vision/ort/ort.all.min.js",
         "lib/vision/screen-vit.js",

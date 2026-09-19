@@ -11,6 +11,9 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 
+const path = require('path');
+const { FormFieldClassifier } = require('../lib/executor/form-classifier');
+
 const app = express();
 const PORT = process.env.PORT || 3001;
 
@@ -55,23 +58,36 @@ Format 1: UI Autonomous Action (if the user asked to fill a form, click a button
       "type": "fill",
       "selector": "input#input-user-phone",
       "fieldType": "phone"
-    },
-    {
-      "type": "fill",
-      "selector": "input#input-user-aadhaar",
-      "fieldType": "aadhaar"
-    },
-    {
-      "type": "fill",
-      "selector": "input#input-user-address",
-      "fieldType": "address"
     }
   ]
 }
 
 CRITICAL RULES:
-- Specify "fieldType" as the semantic category (e.g. "name", "email", "phone", "aadhaar", "pan", "address", "city").
+- Specify "fieldType" as the semantic category from this supported taxonomy:
+  - "name" (Full Name)
+  - "first_name" (First / Given Name)
+  - "last_name" (Last / Family Name / Surname)
+  - "email" (Email Address)
+  - "phone" (Phone / Mobile Number)
+  - "aadhaar" (Aadhaar / National ID)
+  - "pan" (Tax / PAN Card ID)
+  - "passport" (Passport Number)
+  - "address" (Street / Residence Address)
+  - "address_line2" (Landmark / Apt / Area)
+  - "city" (City / Town)
+  - "state" (State / Province)
+  - "pincode" (Postal Code / PIN / ZIP)
+  - "country" (Country / Nationality)
+  - "gender" (Gender / Sex)
+  - "dob" (Date of Birth)
+  - "company" (Company / Institute / Organization)
+  - "occupation" (Job Title / Designation / Profession)
+  - "qualification" (Education / Degree)
+  - "website" (Personal Website / Portfolio URL)
+  - "linkedin" (LinkedIn URL)
+  - "github" (GitHub URL)
 - NEVER guess or output real PII values. The client replaces "fieldType" locally from a mock profile on device.
+- Do NOT generate fill actions for search bars, password fields, or captcha fields.
 - NEVER GENERATE CLICK ACTIONS FOR SUBMIT BUTTONS. Under PrivacyShield security policy, forms must always be submitted manually by the human user after reviewing the filled fields. Do NOT click submit, confirm, or complete buttons on forms.
 
 Format 2: Informational Answer / Summary (if the user asked a factual question, summary, or inspection)
@@ -212,30 +228,29 @@ app.post('/api/agent', async (req, res) => {
       console.log('[Proxy] No external API key found. Running intelligent local simulation response...');
       const lowerTask = task.toLowerCase();
 
-      if (lowerTask.includes('fill') || lowerTask.includes('form') || lowerTask.includes('complete') || lowerTask.includes('auto')) {
-        const inputs = (screenStructure?.elements || []).filter(e => e.type.startsWith('input') || e.type === 'select_dropdown' || e.type === 'textarea');
+      const isFormFill = FormFieldClassifier.isFormFillIntent(task);
+
+      if (isFormFill) {
+        const inputs = (screenStructure?.elements || []).filter(e => {
+          const t = (e.type || '').toLowerCase();
+          return (t.startsWith('input') || t === 'select_dropdown' || t === 'textarea') &&
+                 t !== 'input_password' && t !== 'input_submit' && t !== 'input_button';
+        });
         const actions = [];
 
         inputs.forEach(inp => {
-          let fieldType = 'name';
-          const lbl = (inp.label || inp.selector || '').toLowerCase();
-          if (lbl.includes('email')) fieldType = 'email';
-          else if (lbl.includes('phone') || lbl.includes('mobile') || lbl.includes('contact') || lbl.includes('tel')) fieldType = 'phone';
-          else if (lbl.includes('aadhaar') || lbl.includes('uid') || lbl.includes('aadhar')) fieldType = 'aadhaar';
-          else if (lbl.includes('pan')) fieldType = 'pan';
-          else if (lbl.includes('addr') || lbl.includes('street') || lbl.includes('residence') || lbl.includes('flat')) fieldType = 'address';
-          else if (lbl.includes('city')) fieldType = 'city';
-          else if (lbl.includes('state')) fieldType = 'state';
-          else if (lbl.includes('pin') || lbl.includes('zip')) fieldType = 'pincode';
+          const fieldType = inp.semanticFieldType || FormFieldClassifier.classify(inp);
 
-          actions.push({
-            action: 'fill',
-            type: 'fill',
-            selector: inp.selector || `input[name="${inp.label}"]`,
-            target: { type: 'selector', value: inp.selector || `input[name="${inp.label}"]` },
-            fieldType: fieldType,
-            confidence: 0.95
-          });
+          if (fieldType) {
+            actions.push({
+              action: 'fill',
+              type: 'fill',
+              selector: inp.selector || `input[name="${inp.label}"]`,
+              target: { type: 'selector', value: inp.selector || `input[name="${inp.label}"]` },
+              fieldType: fieldType,
+              confidence: inp.confidence || 0.95
+            });
+          }
         });
 
         // NOTE: Forms must never be submitted automatically

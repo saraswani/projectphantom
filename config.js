@@ -21,13 +21,25 @@ const PrivacyShieldConfig = {
     phone: '+91 98765 43210',
     aadhaar: '2345 6789 0123',
     pan: 'ABCDE1234F',
+    passport: 'Z1234567',
     address: 'Flat 402, Lotus Heights, Outer Ring Road, Bengaluru, Karnataka 560103',
+    address_line2: 'Near Marathahalli Junction',
     city: 'Bengaluru',
     state: 'Karnataka',
     pincode: '560103',
     country: 'India',
     occupation: 'Software Engineer',
-    company: 'ISRO Research Partner'
+    company: 'ISRO Research Partner',
+    gender: 'Male',
+    dob: '1998-05-15',
+    dob_day: '15',
+    dob_month: '05',
+    dob_year: '1998',
+    age: '28',
+    qualification: 'Bachelor of Technology',
+    website: 'https://aaravsharma.dev',
+    linkedin: 'https://linkedin.com/in/aaravsharma',
+    github: 'https://github.com/aaravsharma'
   },
 
   // Detection Thresholds
