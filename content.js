@@ -32,6 +32,35 @@
   const instrumentation = window.instrumentation;
   const getThreatScorer = () => window.computeThreatScore || (typeof computeThreatScore !== 'undefined' ? computeThreatScore : null);
 
+  // Safe Extension Runtime Helpers (protects against "Extension context invalidated" on reload/update)
+  function isExtensionValid() {
+    try {
+      return typeof chrome !== 'undefined' && Boolean(chrome.runtime) && Boolean(chrome.runtime.id);
+    } catch (_) {
+      return false;
+    }
+  }
+
+  function safeRuntimeSendMessage(message) {
+    return new Promise((resolve) => {
+      try {
+        if (!isExtensionValid()) {
+          console.warn('[Phantom AI] Extension was reloaded or context invalidated.');
+          return resolve({ success: false, error: 'Extension reloaded. Please refresh this tab (F5).' });
+        }
+        chrome.runtime.sendMessage(message, (res) => {
+          if (chrome.runtime?.lastError) {
+            const errMsg = chrome.runtime.lastError.message || '';
+            return resolve({ success: false, error: errMsg });
+          }
+          resolve(res || { success: false });
+        });
+      } catch (err) {
+        resolve({ success: false, error: err.message || 'Extension context invalidated.' });
+      }
+    });
+  }
+
   // Pre-initialize OCR worker / sandbox in background
   if (ocrWorker && typeof ocrWorker.init === 'function') {
     ocrWorker.init().catch(() => {});
@@ -383,8 +412,10 @@
     if (alwaysOnCheckbox) {
       alwaysOnCheckbox.addEventListener('change', (e) => {
         alwaysOnEnabled = e.target.checked;
-      if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
-        chrome.storage.local.set({ alwaysOnRedaction: alwaysOnEnabled });
+      if (isExtensionValid() && chrome.storage && chrome.storage.local) {
+        try {
+          chrome.storage.local.set({ alwaysOnRedaction: alwaysOnEnabled });
+        } catch (_) {}
       }
         if (alwaysOnEnabled) {
           runAutoRedaction(document.body, false);
@@ -403,19 +434,24 @@
   }
 
   function initializeAlwaysOn() {
-    if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
-      chrome.storage.local.get(['alwaysOnRedaction'], (res) => {
-        if (res && res.alwaysOnRedaction) {
-          alwaysOnEnabled = true;
-          const cb = document.getElementById('ps-always-on-checkbox');
-          if (cb) cb.checked = true;
-          runAutoRedaction(document.body, false);
-          if (!dynamicFaceObserver) {
-            startDynamicFaceScanner();
-          }
-        }
-      });
-    }
+    try {
+      if (isExtensionValid() && chrome.storage && chrome.storage.local) {
+        chrome.storage.local.get(['alwaysOnRedaction'], (res) => {
+          try {
+            if (chrome.runtime?.lastError) return;
+            if (res && res.alwaysOnRedaction) {
+              alwaysOnEnabled = true;
+              const cb = document.getElementById('ps-always-on-checkbox');
+              if (cb) cb.checked = true;
+              runAutoRedaction(document.body, false);
+              if (!dynamicFaceObserver) {
+                startDynamicFaceScanner();
+              }
+            }
+          } catch (_) {}
+        });
+      }
+    } catch (_) {}
   }
 
   /**
@@ -462,6 +498,10 @@
 
   // Helper for Error Toast
   function showErrorToast(msg) {
+    if (!msg) return;
+    if (typeof msg === 'string' && (msg.includes('context invalidated') || msg.includes('Extension context invalidated'))) {
+      msg = 'Extension updated. Please refresh this tab (F5) to reconnect.';
+    }
     const container = document.getElementById('ps-error-toast-container');
     if (!container) return;
     const toast = document.createElement('div');
@@ -469,7 +509,7 @@
     toast.innerHTML = `<span>${msg}</span><button class="ps-toast-close">✕</button>`;
     toast.querySelector('button').onclick = () => toast.remove();
     container.appendChild(toast);
-    setTimeout(() => { if (toast.parentNode) toast.remove(); }, 5000);
+    setTimeout(() => { if (toast.parentNode) toast.remove(); }, 6000);
   }
 
   async function onOneButtonClick() {
@@ -563,10 +603,13 @@
       updateProgress(65, 'Capturing & Redacting Screenshot Pixels...', 'badge-pixel');
       instrumentation.startStage('screenshot_capture_and_canvas_redaction');
 
-      // Request tab screenshot from background service worker
-      const captureResponse = await new Promise((resolve) => {
-        chrome.runtime.sendMessage({ action: 'CAPTURE_VISIBLE_TAB' }, (res) => resolve(res));
-      });
+      // Request tab screenshot from background service worker safely
+      let captureResponse = null;
+      try {
+        captureResponse = await safeRuntimeSendMessage({ action: 'CAPTURE_VISIBLE_TAB' });
+      } catch (capErr) {
+        console.warn('[Phantom AI] Screenshot capture skipped gracefully:', capErr.message);
+      }
 
       let sanitizedImageBase64 = null;
       let ocrRedactionCount = screenshotOcrBoxes.length;
@@ -924,11 +967,9 @@
       }
 
       // 5. Send Proxy Agent Request (Background -> Proxy Server)
-      const response = await new Promise((resolve) => {
-        chrome.runtime.sendMessage({
-          action: 'PROXY_AGENT_REQUEST',
-          payload: finalOutboundPayload
-        }, (res) => resolve(res));
+      const response = await safeRuntimeSendMessage({
+        action: 'PROXY_AGENT_REQUEST',
+        payload: finalOutboundPayload
       });
 
       instrumentation.endStage('server_agent_roundtrip', { durationMs: response?.networkDurationMs });
@@ -1388,8 +1429,10 @@
 
     // Shut off always-on redaction
     alwaysOnEnabled = false;
-    if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
-      chrome.storage.local.set({ alwaysOnRedaction: false });
+    if (isExtensionValid() && chrome.storage && chrome.storage.local) {
+      try {
+        chrome.storage.local.set({ alwaysOnRedaction: false });
+      } catch (_) {}
     }
     const cb = document.getElementById('ps-always-on-checkbox');
     if (cb) cb.checked = false;
