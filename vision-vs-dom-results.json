@@ -11,7 +11,7 @@
       "piiDetected": "Protected (OCR/Visual Mask)",
       "layoutUnderstood": "Identified [data_table]",
       "marginalAdvantage": "ViT identifies canvas data_table; triggers pixel OCR masking where DOM finds 0 text nodes.",
-      "latencyMs": 14.51
+      "latencyMs": 524.51
     }
   },
   {
@@ -20,13 +20,13 @@
     "domOnly": {
       "piiDetected": "0 PII (MISSED)",
       "layoutUnderstood": "Failed (0 semantic tags)",
-      "latencyMs": 0.01
+      "latencyMs": 0
     },
     "vitAssisted": {
       "piiDetected": "Protected (OCR/Visual Mask)",
       "layoutUnderstood": "Identified [document_reader]",
       "marginalAdvantage": "Classifies image as document_reader; triggers biometric face blur & OCR masking on raw pixels.",
-      "latencyMs": 2.41
+      "latencyMs": 0.05
     }
   },
   {
@@ -41,7 +41,7 @@
       "piiDetected": "Protected (OCR/Visual Mask)",
       "layoutUnderstood": "Identified [interactive_form]",
       "marginalAdvantage": "Visual bounding box detects clickable button geometry despite missing text/aria labels.",
-      "latencyMs": 3.62
+      "latencyMs": 0.02
     }
   },
   {
@@ -50,13 +50,13 @@
     "domOnly": {
       "piiDetected": "Found",
       "layoutUnderstood": "Partial (DOM tags only)",
-      "latencyMs": 8.48
+      "latencyMs": 9.71
     },
     "vitAssisted": {
       "piiDetected": "Protected (OCR/Visual Mask)",
       "layoutUnderstood": "Identified [interactive_form]",
       "marginalAdvantage": "Detects top-layer occlusion; prevents agent from clicking hidden inputs behind modal.",
-      "latencyMs": 10.24
+      "latencyMs": 9.74
     }
   }
 ]

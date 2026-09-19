@@ -77,10 +77,10 @@
     `;
 
     host.innerHTML = `
-      <!-- Top Right: Exposure Bar -->
+      <!-- Top Right: Exposure Bar (Always On) -->
       <div class="ps-top-right-container">
-        <div class="ps-exposure-bar-minimal" id="ps-threat-container" style="display:none;" title="Heuristic on-device page exposure indicator based on connection and visible sensitive fields">
-          <span class="ps-threat-label" id="ps-threat-label">Exposure: --%</span>
+        <div class="ps-exposure-bar-minimal" id="ps-threat-container" style="display:flex;" title="Heuristic on-device page exposure indicator based on connection and visible sensitive fields">
+          <span class="ps-threat-label" id="ps-threat-label">Site Exposure: 0%</span>
           <div class="ps-threat-bar-track-minimal">
             <div class="ps-threat-bar-fill-minimal level-low" id="ps-threat-bar-fill" style="width: 0%;"></div>
           </div>
@@ -100,11 +100,11 @@
         </div>
       </div>
 
-      <!-- Bottom Left: Telemetry Drawer (Hidden until scan/activity) -->
-      <div class="ps-telemetry-minimal" id="ps-drawer" style="display:none;">
+      <!-- Bottom Left: Telemetry Drawer (Always On) -->
+      <div class="ps-telemetry-minimal" id="ps-drawer" style="display:block;">
         <div class="ps-telemetry-header" id="ps-drawer-toggle">
           <span>⚙ Audit (<span id="ps-total-latency">0 ms</span>) <span id="ps-drawer-arrow" style="font-size: 9px; margin-left: 4px;">▼</span></span>
-          <button class="ps-icon-btn-minimal" id="ps-drawer-close" style="width:18px; height:18px; border:none; background:transparent; font-size:11px; padding:0; color:#6E6D6A;" title="Close Audit">✕</button>
+          <button class="ps-icon-btn-minimal" id="ps-drawer-close" style="width:18px; height:18px; border:none; background:transparent; font-size:11px; padding:0; color:#6E6D6A;" title="Minimize Audit">✕</button>
         </div>
         <div class="ps-telemetry-body" id="ps-drawer-body" style="display:none;">
           <div id="ps-telemetry-meta">HW: <strong id="meta-hw">...</strong> | Face: <strong id="meta-face">...</strong></div>
@@ -340,8 +340,10 @@
     if (drawerClose) {
       drawerClose.addEventListener('click', (e) => {
         e.stopPropagation();
-        const drawer = host.querySelector('#ps-drawer');
-        if (drawer) drawer.style.display = 'none';
+        const body = host.querySelector('#ps-drawer-body');
+        const arrow = host.querySelector('#ps-drawer-arrow');
+        if (body) body.style.display = 'none';
+        if (arrow) arrow.textContent = '▼';
       });
     }
 
@@ -395,11 +397,9 @@
       });
     }
 
-    // Hide exposure bar after 1 minute (60,000 ms)
-    setTimeout(() => {
-      const threatContainer = document.getElementById('ps-threat-container');
-      if (threatContainer) threatContainer.style.display = 'none';
-    }, 60000);
+    // Initialize Always-On Site Exposure & Audit Telemetry on page load
+    initThreatScore();
+    initAuditDrawer();
   }
 
   function initializeAlwaysOn() {
@@ -502,48 +502,54 @@
       const domRedactionResult = domRedactor.redactPageDOM();
       instrumentation.endStage('dom_text_pii_scan', { piiCount: domRedactionResult.totalRedacted });
 
-      // 2. Face / Visual PII Detection (BlazeFace ML + Fallback with Timeout)
-      updateProgress(30, 'Running Local BlazeFace Face Detection...', 'badge-face');
+      // 2. Face / Visual & Document PII Detection (Concurrent BlazeFace ML & Document OCR)
+      updateProgress(30, 'Running Local Face & Document Detection...', 'badge-face');
       instrumentation.startStage('local_face_detection');
 
       let detectedFaces = [];
       let faceStatus = faceDetector.getStatus();
+      let pageOcrBoxes = [];
+      let screenshotOcrBoxes = [];
+
       try {
-        detectedFaces = await faceDetector.scanPageImages();
+        const [facesRes, pageOcrRes] = await Promise.all([
+          faceDetector.scanPageImages().catch(faceErr => {
+            console.warn('[Phantom AI] Face detection failed gracefully:', faceErr);
+            return [];
+          }),
+          (typeof ocrWorker !== 'undefined' && ocrWorker && typeof ocrWorker.scanPageImages === 'function')
+            ? Promise.race([
+                ocrWorker.scanPageImages(),
+                new Promise(res => setTimeout(() => res({ domOcrBoxes: [], screenshotOcrBoxes: [] }), 2500))
+              ]).catch(ocrErr => {
+                console.warn('[Phantom AI] Page images OCR failed gracefully:', ocrErr);
+                return { domOcrBoxes: [], screenshotOcrBoxes: [] };
+              })
+            : Promise.resolve({ domOcrBoxes: [], screenshotOcrBoxes: [] })
+        ]);
+
+        detectedFaces = facesRes || [];
         faceStatus = faceDetector.getStatus();
         
         // --- LIVE DOM FACE OVERLAY REDACTION ---
-        const injectedOverlaysCount = domRedactor.redactDOMFaces(detectedFaces);
-        console.log(`[Phantom AI] Injected ${injectedOverlaysCount} live DOM face redaction overlays.`);
-      } catch (faceErr) {
-        console.warn('[Phantom AI] Face detection failed gracefully:', faceErr);
+        if (detectedFaces.length > 0) {
+          const injectedOverlaysCount = domRedactor.redactDOMFaces(detectedFaces);
+          console.log(`[Phantom AI] Injected ${injectedOverlaysCount} live DOM face redaction overlays.`);
+        }
+
+        // --- LIVE DOM OCR OVERLAY REDACTION (Passports, IDs) ---
+        if (pageOcrRes && pageOcrRes.domOcrBoxes && pageOcrRes.domOcrBoxes.length > 0) {
+          pageOcrBoxes = pageOcrRes.domOcrBoxes;
+          screenshotOcrBoxes = pageOcrRes.screenshotOcrBoxes || [];
+          if (domRedactor && typeof domRedactor.redactDOMOCRBoxes === 'function') {
+            const injectedOcrCount = domRedactor.redactDOMOCRBoxes(pageOcrBoxes);
+            console.log(`[Phantom AI] Injected ${injectedOcrCount} live DOM OCR redaction overlays.`);
+          }
+        }
+      } catch (detectionErr) {
+        console.warn('[Phantom AI] Visual perception error:', detectionErr);
       }
       instrumentation.endStage('local_face_detection', { facesCount: detectedFaces.length, backend: faceStatus.activeBackend });
-
-      // 2b. Local OCR & Document PII Detection on Page Images (Passports, IDs, Documents)
-      let pageOcrBoxes = [];
-      let screenshotOcrBoxes = [];
-      if (typeof ocrWorker !== 'undefined' && ocrWorker && typeof ocrWorker.scanPageImages === 'function') {
-        try {
-          updateProgress(35, 'Scanning Document Images for Sensitive PII...', 'badge-ocr');
-          const pageOcrRes = await Promise.race([
-            ocrWorker.scanPageImages(),
-            new Promise(res => setTimeout(() => res({ domOcrBoxes: [], screenshotOcrBoxes: [] }), 25000))
-          ]);
-          if (pageOcrRes && pageOcrRes.domOcrBoxes && pageOcrRes.domOcrBoxes.length > 0) {
-            pageOcrBoxes = pageOcrRes.domOcrBoxes;
-            screenshotOcrBoxes = pageOcrRes.screenshotOcrBoxes || [];
-            
-            // --- LIVE DOM OCR OVERLAY REDACTION (Passports, IDs) ---
-            if (domRedactor && typeof domRedactor.redactDOMOCRBoxes === 'function') {
-              const injectedOcrCount = domRedactor.redactDOMOCRBoxes(pageOcrBoxes);
-              console.log(`[Phantom AI] Injected ${injectedOcrCount} live DOM OCR redaction overlays.`);
-            }
-          }
-        } catch (ocrImgErr) {
-          console.warn('[Phantom AI] Page images OCR failed gracefully:', ocrImgErr);
-        }
-      }
 
       // 3. Screen-Understanding & UI Structure Model (Component 1)
       updateProgress(45, 'Executing Local Screen-Understanding Model...', 'badge-screen');
@@ -600,14 +606,17 @@
           }
         }
 
-        // --- 4a. OCR Text Recognition on Screenshot (if no page image OCR detected) ---
-        if (ocrBoxes.length === 0 && typeof ocrWorker !== 'undefined' && ocrWorker && typeof ocrWorker.detectSensitiveBoxes === 'function') {
-          updateProgress(70, 'Running Local OCR on Screenshot...', 'badge-ocr');
+        // --- 4a. OCR Text Recognition on Screenshot (only if non-DOM canvas or document elements exist) ---
+        const hasCanvasOrDoc = Boolean(document.querySelector('canvas:not(#privacyshield-root canvas), embed, object')) ||
+                               (pipelineState.screenStructure?.visualSignal?.visualPageType === 'document_reader');
+
+        if (ocrBoxes.length === 0 && hasCanvasOrDoc && typeof ocrWorker !== 'undefined' && ocrWorker && typeof ocrWorker.detectSensitiveBoxes === 'function') {
+          updateProgress(70, 'Running Local OCR on Canvas Surfaces...', 'badge-ocr');
           instrumentation.startStage('ocr_text_extraction');
           try {
             const ocrRes = await Promise.race([
               ocrWorker.detectSensitiveBoxes(captureResponse.dataUrl),
-              new Promise(res => setTimeout(() => res({ ocrBoxes: [] }), 25000))
+              new Promise(res => setTimeout(() => res({ ocrBoxes: [] }), 2500))
             ]);
             if (ocrRes && ocrRes.ocrBoxes && ocrRes.ocrBoxes.length > 0) {
               ocrBoxes = ocrRes.ocrBoxes;
@@ -1197,6 +1206,126 @@
   }
 
   /**
+   * Evaluates baseline threat score for current page and updates exposure UI.
+   */
+  function calculateCurrentThreatScore() {
+    const isHttps = window.location.protocol === 'https:';
+    const hasPasswordField = Boolean(document.querySelector('input[type="password"]'));
+    let crossOriginFormsCount = 0;
+    let thirdPartyIframesCount = 0;
+    const currentHost = window.location.hostname;
+
+    try {
+      document.querySelectorAll('form[action]').forEach(f => {
+        if (f.closest && f.closest('#privacyshield-root')) return;
+        const actionUrl = f.getAttribute('action') || '';
+        if (actionUrl.startsWith('http://') || actionUrl.startsWith('https://')) {
+          try {
+            const formHost = new URL(actionUrl, window.location.href).hostname;
+            if (formHost && formHost !== currentHost) crossOriginFormsCount++;
+          } catch (_) {}
+        }
+      });
+
+      document.querySelectorAll('iframe[src]').forEach(ifr => {
+        if (ifr.closest && ifr.closest('#privacyshield-root')) return;
+        const srcUrl = ifr.getAttribute('src') || '';
+        if (srcUrl.startsWith('http://') || srcUrl.startsWith('https://')) {
+          try {
+            const ifrHost = new URL(srcUrl, window.location.href).hostname;
+            if (ifrHost && ifrHost !== currentHost) thirdPartyIframesCount++;
+          } catch (_) {}
+        }
+      });
+    } catch (_) {}
+
+    const detectedPII = (pipelineState.isRedacted && pipelineState.lastTelemetry?.stages?.dom_text_pii_scan?.metadata?.piiCount) || 0;
+
+    const scorerFn = getThreatScorer();
+    if (typeof scorerFn === 'function') {
+      return scorerFn({
+        isHttps,
+        hasPasswordField,
+        detectedPII,
+        crossOriginFormsCount,
+        thirdPartyIframesCount
+      });
+    }
+
+    // Default internal fallback computation
+    let score = 0;
+    const factors = [];
+    if (!isHttps) {
+      score += 30;
+      factors.push('Unencrypted connection (HTTP): +30');
+      if (hasPasswordField) {
+        score += 40;
+        factors.push('Password input on insecure HTTP transport: +40');
+      }
+    }
+    if (crossOriginFormsCount > 0) {
+      score += 15;
+      factors.push('Form submitting to third-party domain: +15');
+    }
+    if (thirdPartyIframesCount > 0) {
+      score += 10;
+      factors.push('Third-party iframe embedded: +10');
+    }
+    if (detectedPII > 0) {
+      score += Math.min(25, detectedPII * 5);
+      factors.push(`Sensitive PII entities exposed: +${Math.min(25, detectedPII * 5)}`);
+    }
+
+    return {
+      score: Math.min(100, score),
+      factors,
+      level: score > 66 ? 'high' : (score >= 33 ? 'medium' : 'low')
+    };
+  }
+
+  function initThreatScore() {
+    try {
+      const threatResult = calculateCurrentThreatScore();
+      pipelineState.threatScore = threatResult;
+      updateThreatIndicatorUI(threatResult);
+
+      const threatContainer = document.getElementById('ps-threat-container');
+      if (threatContainer) threatContainer.style.display = 'flex';
+    } catch (err) {
+      console.warn('[Phantom AI] Threat score init notice:', err);
+    }
+  }
+
+  function initAuditDrawer() {
+    try {
+      const drawer = document.getElementById('ps-drawer');
+      if (drawer) drawer.style.display = 'block';
+
+      const hwEl = document.getElementById('meta-hw');
+      if (hwEl && instrumentation && typeof instrumentation.getSystemDiagnostics === 'function') {
+        hwEl.textContent = instrumentation.getSystemDiagnostics().hardwareProvider;
+      }
+
+      const faceEl = document.getElementById('meta-face');
+      if (faceEl && faceDetector && typeof faceDetector.getStatus === 'function') {
+        faceEl.textContent = faceDetector.getStatus().activeBackend || 'WebGL/WASM';
+      }
+
+      const decisionEl = document.getElementById('meta-decision');
+      if (decisionEl) {
+        decisionEl.textContent = 'Standby (Ready)';
+      }
+
+      const waterfall = document.getElementById('ps-waterfall-container');
+      if (waterfall && !waterfall.innerHTML) {
+        waterfall.innerHTML = `<div style="font-size:10px; color:#6E6D6A; padding:6px 0;">Auditor ready. Click Scan & Redact to capture live execution metrics.</div>`;
+      }
+    } catch (err) {
+      console.warn('[Phantom AI] Audit drawer init notice:', err);
+    }
+  }
+
+  /**
    * Updates the on-device threat / site exposure indicator bar and label.
    */
   function updateThreatIndicatorUI(threatResult) {
@@ -1207,9 +1336,9 @@
     if (!fillEl || !labelEl) return;
 
     if (!threatResult) {
-      labelEl.textContent = 'Site Exposure: --%';
+      labelEl.textContent = 'Site Exposure: 0%';
       fillEl.style.width = '0%';
-      fillEl.className = 'ps-threat-bar-fill level-low';
+      fillEl.className = 'ps-threat-bar-fill-minimal level-low';
       return;
     }
 
@@ -1217,7 +1346,7 @@
     labelEl.textContent = `Site Exposure: ${score}%`;
     fillEl.style.width = `${score}%`;
 
-    fillEl.className = `ps-threat-bar-fill level-${threatResult.level || 'low'}`;
+    fillEl.className = `ps-threat-bar-fill-minimal level-${threatResult.level || 'low'}`;
 
     if (containerEl && Array.isArray(threatResult.factors)) {
       containerEl.setAttribute('title', `On-Device Exposure Factors:\n• ${threatResult.factors.join('\n• ')}`);
@@ -1244,13 +1373,18 @@
     document.getElementById('ps-task-box').style.display = 'none';
     document.getElementById('ps-preview-box').style.display = 'none';
     document.getElementById('ps-result-card').style.display = 'none';
+    // Maintain Always-On Site Exposure & Audit Telemetry
     const drawer = document.getElementById('ps-drawer');
-    if (drawer) drawer.style.display = 'none';
+    if (drawer) drawer.style.display = 'block';
+    const drawerBody = document.getElementById('ps-drawer-body');
+    if (drawerBody) drawerBody.style.display = 'none';
+    const arrow = document.getElementById('ps-drawer-arrow');
+    if (arrow) arrow.textContent = '▼';
     const statusDots = document.getElementById('ps-status-dots');
     if (statusDots) statusDots.style.display = 'none';
     const threatContainer = document.getElementById('ps-threat-container');
-    if (threatContainer) threatContainer.style.display = 'none';
-    updateThreatIndicatorUI(null);
+    if (threatContainer) threatContainer.style.display = 'flex';
+    initThreatScore();
 
     // Shut off always-on redaction
     alwaysOnEnabled = false;
