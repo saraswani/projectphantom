@@ -24,16 +24,10 @@
   "author": "PrivacyShield Team",
   "license": "MIT",
   "dependencies": {
-    "@tensorflow-models/blazeface": "^0.1.0",
-    "@tensorflow/tfjs": "^4.22.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "onnxruntime-web": "^1.30.0",
     "pngjs": "^7.0.0",
     "tesseract.js": "^7.0.0"
-  },
-  "devDependencies": {
-    "esbuild": "^0.25.0"
   }
 }
