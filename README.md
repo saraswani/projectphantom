@@ -216,10 +216,4 @@ Raw result files are output to `presidio_benchmark_results.json` and `phantom_be
 - `demo/` - Local demonstration page (`index.html`) containing test forms and structured PII fields.
 - `evaluation/` - Test harnesses, benchmark suites, and comparative evaluation artifacts.
 
----
 
-## 7. Links
-
-- Demo Video: [Watch Demonstration Video](https://github.com/saraswani/projectphantom)
-- Presentation Slides: [View Project PPT](https://github.com/saraswani/projectphantom)
-- License: [MIT License](LICENSE)
