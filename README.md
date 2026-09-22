@@ -6,8 +6,6 @@ Project Phantom is an on-device privacy filter and browser automation extension 
 
 Team: SuperORIX  
 Team ID: 142011  
-Problem Statement: PS 26171  
-License: MIT  
 
 ---
 
