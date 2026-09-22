@@ -2,10 +2,7 @@
 
 > What shouldn't be seen, disappears.
 
-Project Phantom is an on-device privacy filter and browser automation extension developed for Smart India Hackathon 2026 (Problem Statement 26171: "On-device Visual Perception for Light-weight Browser Agents"). When browser automation agents interact with web pages, sending raw screenshots and DOM text to cloud vision-language models exposes sensitive citizen data, credentials, and biometric faces. Phantom detects and redacts personal identifiable information (PII), credentials, and faces locally on the client machine before any data leaves the browser, allowing remote vision models to reason about page structure without receiving raw sensitive values.
-
-Team: SuperORIX  
-Team ID: 142011  
+Project Phantom is an on-device privacy filter and browser automation extension developed for Smart India Hackathon 2026 ("On-device Visual Perception for Light-weight Browser Agents"). When browser automation agents interact with web pages, sending raw screenshots and DOM text to cloud vision-language models exposes sensitive citizen data, credentials, and biometric faces. Phantom detects and redacts personal identifiable information (PII), credentials, and faces locally on the client machine before any data leaves the browser, allowing remote vision models to reason about page structure without receiving raw sensitive values.
 
 ---
 
