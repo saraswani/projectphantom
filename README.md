@@ -132,13 +132,6 @@ A local test page is provided at `demo/index.html`.
 
 The benchmark below compares Project Phantom against Microsoft Presidio under controlled conditions. Both systems were tested on the same host hardware against an identical shared dataset of 33 documents containing 67 positive ground-truth PII entities and 12 negative control items. Each document was evaluated across 15 iterations (n = 495 timed runs per system).
 
-Test Environment:
-- Host CPU: AMD Ryzen 3 3200U (2 physical cores, 4 threads at 2.60 GHz)
-- Memory: 10.36 GB physical RAM
-- Operating System: Windows 11 Pro 64-bit
-- Runtimes: Node.js v24.20.0, Python 3.13.14
-- Models: Presidio Analyzer v2.2.364 with `spacy` v3.8.16 (`en_core_web_sm` v3.8.0); Phantom text detector and regex rules engine.
-
 ### Table 1: Head-to-Head Comparison (Presidio vs. Phantom Text Engine)
 
 | Evaluation Metric | Microsoft Presidio (Out-Of-The-Box) | Project Phantom (Text Engine) | Sample Size and Scope |
